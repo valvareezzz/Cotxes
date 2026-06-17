@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía de coches &mdash; encuentra el tuyo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg-base:#11141A;
+  --bg-panel:#1B1F28;
+  --bg-raised:#232834;
+  --hairline:#2A2F3A;
+  --ink:#ECEAE3;
+  --ink-muted:#8E94A3;
+  --ink-dim:#5E6473;
+  --amber:#FF8A3D;
+  --amber-dim:rgba(255,138,61,.16);
+  --teal:#4FD8B8;
+  --teal-dim:rgba(79,216,184,.16);
+  --red:#FF6B6B;
+  --red-dim:rgba(255,107,107,.14);
+  --font-display:'Oswald','Arial Narrow',sans-serif;
+  --font-body:'Inter',-apple-system,'Segoe UI',Roboto,sans-serif;
+  --font-mono:'IBM Plex Mono','SFMono-Regular',Consolas,monospace;
+  --radius:14px;
+  --radius-sm:9px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg-base);
+  color:var(--ink);
+  font-family:var(--font-body);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.page{max-width:1180px;margin:0 auto;padding:0 24px 40px;}
+a{color:inherit;}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:4px;}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important;}
+}
+
+/* ---------- typography helpers ---------- */
+.section__eyebrow{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:.12em;
+  color:var(--amber);
+  margin:0 0 10px;
+  text-transform:uppercase;
+}
+.section__title{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:clamp(24px,3vw,32px);
+  margin:0 0 8px;
+  letter-spacing:.01em;
+}
+.section__sub{
+  color:var(--ink-muted);
+  margin:0;
+  max-width:640px;
+  font-size:15px;
+}
+
+/* ---------- hero ---------- */
+.hero{
+  border-bottom:1px solid var(--hairline);
+  background:
+    radial-gradient(ellipse 900px 420px at 18% -10%, rgba(255,138,61,.10), transparent 60%),
+    radial-gradient(ellipse 700px 380px at 90% 0%, rgba(79,216,184,.08), transparent 60%);
+}
+.hero__inner{max-width:1180px;margin:0 auto;padding:64px 24px 40px;}
+.hero__eyebrow{
+  font-family:var(--font-mono);
+  font-size:12px;
+  letter-spacing:.14em;
+  color:var(--teal);
+  margin:0 0 18px;
+}
+.hero__title{
+  font-family:var(--font-display);
+  font-weight:700;
+  text-transform:uppercase;
+  font-size:clamp(34px,6vw,58px);
+  line-height:1.04;
+  margin:0 0 20px;
+  letter-spacing:.005em;
+}
+.hero__lead{
+  font-size:17px;
+  color:var(--ink-muted);
+  max-width:620px;
+  margin:0 0 36px;
+}
+.hero__stats{display:flex;flex-wrap:wrap;gap:28px;}
+.stat{
+  border-left:2px solid var(--amber);
+  padding-left:14px;
+}
+.stat__value{
+  display:block;
+  font-family:var(--font-mono);
+  font-size:22px;
+  font-weight:600;
+  font-variant-numeric:tabular-nums;
+}
+.stat__label{
+  display:block;
+  font-size:12px;
+  color:var(--ink-dim);
+  margin-top:2px;
+}
+
+/* ---------- guide ---------- */
+.guide,.picks,.explorer{padding:56px 0 8px;}
+.guide__head,.picks__head,.explorer__head{margin-bottom:26px;}
+.guide__list{display:flex;flex-direction:column;gap:10px;}
+.guide-item{
+  background:var(--bg-panel);
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+.guide-item summary{
+  list-style:none;
+  cursor:pointer;
+  padding:16px 20px;
+  display:flex;
+  align-items:baseline;
+  gap:16px;
+}
+.guide-item summary::-webkit-details-marker{display:none;}
+.guide-item__num{
+  font-family:var(--font-mono);
+  color:var(--amber);
+  font-size:14px;
+  min-width:22px;
+}
+.guide-item__title{
+  font-family:var(--font-display);
+  font-size:17px;
+  font-weight:600;
+  letter-spacing:.01em;
+  flex:1;
+}
+.guide-item__chevron{
+  color:var(--ink-dim);
+  transition:transform .15s ease;
+  font-family:var(--font-mono);
+}
+.guide-item[open] .guide-item__chevron{transform:rotate(45deg);}
+.guide-item__body{
+  padding:0 20px 18px 58px;
+  color:var(--ink-muted);
+  font-size:14.5px;
+  max-width:680px;
+}
+.guide-item__body p{margin:0 0 10px;}
+.guide-item__body p:last-child{margin-bottom:0;}
+
+/* ---------- picks ---------- */
+.picks__grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+  gap:14px;
+}
+.pick-card{
+  display:block;
+  width:100%;
+  appearance:none;
+  font:inherit;
+  background:var(--bg-panel);
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:18px 18px 16px;
+  text-align:left;
+  cursor:pointer;
+  color:var(--ink);
+  font-family:inherit;
+  transition:border-color .15s ease, transform .15s ease;
+}
+.pick-card:hover{border-color:var(--amber);transform:translateY(-2px);}
+.pick-card__label{
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--teal);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin:0 0 8px;
+}
+.pick-card__name{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:18px;
+  margin:0 0 6px;
+}
+.pick-card__why{
+  font-size:13.5px;
+  color:var(--ink-muted);
+  margin:0 0 12px;
+}
+.pick-card__btn{
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--amber);
+}
+.pick-card__btn::after{content:" \2192";}
+
+/* ---------- controls ---------- */
+.controls{
+  background:var(--bg-panel);
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:18px 20px;
+  margin-bottom:24px;
+  position:sticky;
+  top:10px;
+  z-index:5;
+  backdrop-filter:blur(6px);
+}
+.controls__row{
+  display:grid;
+  grid-template-columns:1.6fr 1fr 1fr 1fr 1fr;
+  gap:12px;
+}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--ink-dim);
+  font-family:var(--font-mono);
+}
+.field input,.field select{
+  background:var(--bg-raised);
+  border:1px solid var(--hairline);
+  color:var(--ink);
+  border-radius:var(--radius-sm);
+  padding:10px 12px;
+  font-size:14px;
+  font-family:var(--font-body);
+}
+.field input:focus,.field select:focus{border-color:var(--amber);}
+.controls__count{
+  margin:14px 2px 0;
+  font-size:13px;
+  color:var(--ink-dim);
+  font-family:var(--font-mono);
+}
+
+/* ---------- grid & cards ---------- */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+  gap:16px;
+}
+.empty{color:var(--ink-muted);padding:30px 0;}
+.car-card{
+  background:var(--bg-panel);
+  border:1px solid var(--hairline);
+  border-radius:var(--radius);
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.car-card__top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.car-card__brand{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-dim);
+}
+.badges{display:flex;flex-wrap:wrap;gap:6px;}
+.badge{
+  font-family:var(--font-mono);
+  font-size:10.5px;
+  padding:3px 8px;
+  border-radius:20px;
+  border:1px solid var(--hairline);
+  color:var(--ink-muted);
+  white-space:nowrap;
+}
+.badge--fuel-electrico{color:var(--teal);border-color:rgba(79,216,184,.4);background:var(--teal-dim);}
+.badge--fuel-hibrido,.badge--fuel-hibrido-enchufable{color:var(--amber);border-color:rgba(255,138,61,.4);background:var(--amber-dim);}
+.car-card__visual{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--bg-raised);
+  border-radius:var(--radius-sm);
+  padding:10px 6px;
+  text-decoration:none;
+  transition:background .15s ease;
+}
+.car-card__visual:hover{background:#283040;}
+.car-card__visual svg{width:100%;height:56px;}
+.photo-link{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--ink-dim);
+  text-decoration:none;
+  margin-top:-4px;
+}
+.photo-link:hover{color:var(--amber);text-decoration:underline;}
+.photo-link--detail{
+  display:block;
+  text-align:center;
+  font-size:13px;
+  margin:10px 0 4px;
+  padding:11px;
+  border:1px solid var(--hairline);
+  border-radius:var(--radius-sm);
+  background:var(--bg-raised);
+  color:var(--ink);
+}
+.photo-link--detail:hover{border-color:var(--amber);color:var(--amber);}
+.car-card__model{
+  font-family:var(--font-display);
+  font-size:20px;
+  font-weight:600;
+  margin:0;
+  line-height:1.15;
+}
+.car-card__tagline{
+  font-size:13px;
+  color:var(--ink-muted);
+  margin:0;
+  min-height:34px;
+}
+.gauge-block{display:flex;align-items:center;gap:10px;}
+.gauge-block svg{width:64px;height:38px;flex:none;}
+.gauge-block__text{display:flex;flex-direction:column;}
+.gauge-block__price{
+  font-family:var(--font-mono);
+  font-weight:600;
+  font-size:15px;
+  font-variant-numeric:tabular-nums;
+}
+.gauge-block__label{font-size:10.5px;color:var(--ink-dim);}
+.specs-row{display:flex;gap:14px;flex-wrap:wrap;}
+.spec-chip{
+  display:flex;
+  flex-direction:column;
+  font-family:var(--font-mono);
+}
+.spec-chip__value{font-size:13.5px;font-weight:600;font-variant-numeric:tabular-nums;}
+.spec-chip__label{font-size:10px;color:var(--ink-dim);}
+.car-card__actions{
+  margin-top:auto;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  padding-top:6px;
+  border-top:1px solid var(--hairline);
+}
+.btn{
+  font-family:var(--font-body);
+  font-weight:600;
+  font-size:13px;
+  border-radius:var(--radius-sm);
+  padding:9px 14px;
+  border:1px solid var(--hairline);
+  background:transparent;
+  color:var(--ink);
+  cursor:pointer;
+}
+.btn--primary{background:var(--amber);border-color:var(--amber);color:#171008;}
+.btn--primary:disabled{background:var(--bg-raised);border-color:var(--hairline);color:var(--ink-dim);cursor:not-allowed;}
+.btn--full{flex:1;text-align:center;}
+.fav-btn{
+  width:38px;height:38px;flex:none;
+  border-radius:var(--radius-sm);
+  border:1px solid var(--hairline);
+  background:transparent;
+  color:var(--ink-dim);
+  cursor:pointer;
+  font-size:16px;
+  display:flex;align-items:center;justify-content:center;
+}
+.fav-btn.is-active{color:var(--teal);border-color:rgba(79,216,184,.5);background:var(--teal-dim);}
+
+/* ---------- overlay / panel ---------- */
+.overlay{
+  position:fixed;inset:0;
+  background:rgba(8,9,12,.66);
+  display:none;
+  align-items:stretch;
+  justify-content:flex-end;
+  z-index:50;
+  padding:0;
+}
+.overlay.is-open{display:flex;}
+.panel{
+  background:var(--bg-panel);
+  width:min(520px,100%);
+  height:100%;
+  overflow-y:auto;
+  padding:26px 26px 100px;
+  position:relative;
+  border-left:1px solid var(--hairline);
+}
+.panel--wide{width:min(840px,100%);}
+.panel__close{
+  position:absolute;top:18px;right:18px;
+  width:36px;height:36px;
+  border-radius:50%;
+  border:1px solid var(--hairline);
+  background:var(--bg-raised);
+  color:var(--ink);
+  font-size:20px;
+  cursor:pointer;
+  line-height:1;
+}
+.detail__brand{font-family:var(--font-mono);color:var(--ink-dim);letter-spacing:.08em;text-transform:uppercase;font-size:12px;margin:0 0 4px;}
+.detail__model{font-family:var(--font-display);font-size:28px;font-weight:700;margin:0 0 10px;}
+.detail__visual{background:var(--bg-raised);border-radius:var(--radius);padding:18px;margin:14px 0;display:flex;justify-content:center;}
+.detail__visual svg{width:80%;max-width:280px;height:auto;}
+.detail__gauge{display:flex;align-items:center;gap:16px;margin:18px 0;padding:14px;background:var(--bg-raised);border-radius:var(--radius-sm);}
+.detail__gauge svg{width:96px;height:56px;flex:none;}
+.detail__price{font-family:var(--font-mono);font-size:20px;font-weight:600;}
+.detail__price-sub{font-size:11.5px;color:var(--ink-dim);}
+.spec-table{width:100%;border-collapse:collapse;margin:18px 0;}
+.spec-table td{padding:9px 0;border-bottom:1px solid var(--hairline);font-size:13.5px;}
+.spec-table td:first-child{color:var(--ink-dim);width:46%;}
+.spec-table td:last-child{font-family:var(--font-mono);font-weight:600;text-align:right;}
+.reco-box{
+  background:var(--amber-dim);
+  border:1px solid rgba(255,138,61,.35);
+  border-radius:var(--radius-sm);
+  padding:16px 18px;
+  margin:18px 0;
+}
+.reco-box__label{font-family:var(--font-mono);font-size:11px;color:var(--amber);text-transform:uppercase;letter-spacing:.08em;margin:0 0 8px;}
+.reco-box p{margin:0;font-size:14.5px;line-height:1.55;}
+.pc-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0;}
+.pc-col h4{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin:0 0 10px;}
+.pc-col.pros h4{color:var(--teal);}
+.pc-col.cons h4{color:var(--red);}
+.pc-col ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;}
+.pc-col li{font-size:13.5px;padding-left:20px;position:relative;color:var(--ink-muted);}
+.pc-col.pros li::before{content:"+";position:absolute;left:0;color:var(--teal);font-weight:700;}
+.pc-col.cons li::before{content:"\2013";position:absolute;left:0;color:var(--red);font-weight:700;}
+.detail__tags{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 22px;}
+.detail__actions{display:flex;gap:10px;}
+@media (max-width:640px){
+  .panel{padding:20px 18px 100px;}
+  .pc-grid{grid-template-columns:1fr;}
+}
+
+/* ---------- compare ---------- */
+.tray{
+  position:fixed;left:0;right:0;bottom:0;
+  background:var(--bg-raised);
+  border-top:1px solid var(--hairline);
+  padding:14px 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  z-index:40;
+  flex-wrap:wrap;
+}
+.tray__items{display:flex;gap:8px;flex-wrap:wrap;flex:1;}
+.compare-chip{
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg-panel);
+  border:1px solid var(--hairline);
+  border-radius:20px;
+  padding:6px 6px 6px 12px;
+  font-size:12.5px;
+}
+.compare-chip button{
+  background:none;border:none;color:var(--ink-dim);cursor:pointer;font-size:15px;
+  width:22px;height:22px;border-radius:50%;
+}
+.compare-chip button:hover{color:var(--red);}
+.tray__actions{display:flex;align-items:center;gap:14px;}
+.tray__hint{font-size:12px;color:var(--ink-dim);font-family:var(--font-mono);margin:0;}
+.compare-table{width:100%;border-collapse:collapse;margin-top:10px;}
+.compare-table th,.compare-table td{
+  border-bottom:1px solid var(--hairline);
+  padding:10px 8px;
+  font-size:13px;
+  text-align:left;
+  vertical-align:top;
+}
+.compare-table th{
+  font-family:var(--font-display);
+  font-size:15px;
+  font-weight:600;
+}
+.compare-table td:first-child,.compare-table th:first-child{
+  font-family:var(--font-mono);
+  color:var(--ink-dim);
+  font-size:11.5px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  white-space:nowrap;
+}
+.compare-table td{font-variant-numeric:tabular-nums;}
+.compare__head{font-family:var(--font-display);font-size:22px;font-weight:700;margin:0 0 18px;}
+
+/* ---------- footer ---------- */
+.footer{padding:40px 0 10px;border-top:1px solid var(--hairline);margin-top:30px;}
+.footer__note{font-size:12.5px;color:var(--ink-dim);max-width:780px;}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .controls__row{grid-template-columns:1fr 1fr;}
+  .field--search{grid-column:1 / -1;}
+}
+@media (max-width:560px){
+  .hero__inner{padding:46px 20px 32px;}
+  .controls__row{grid-template-columns:1fr;}
+  .grid{grid-template-columns:1fr;}
+  .picks__grid{grid-template-columns:1fr;}
+}
+
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero__inner">
+      <p class="hero__eyebrow">PARA QUIEN EMPIEZA DESDE 0&nbsp;KM DE CONOCIMIENTO</p>
+      <h1 class="hero__title">Encuentra tu coche<br>sin marearte</h1>
+      <p class="hero__lead">175 modelos de 45 marcas, con precio orientativo, prestaciones explicadas en cristiano
+        y mi recomendación sincera para cada uno. Filtra por lo que te importa, abre la ficha completa
+        y, si quieres, compara hasta 3 a la vez.</p>
+      <div class="hero__stats" id="heroStats"></div>
+    </div>
+  </header>
+
+  <!-- GUÍA RÁPIDA -->
+  <section class="guide" id="guide">
+    <div class="guide__head">
+      <p class="section__eyebrow">ANTES DE MIRAR NINGÚN MODELO</p>
+      <h2 class="section__title">Cinco decisiones, en orden</h2>
+      <p class="section__sub">Decide esto primero y elegir modelo concreto será mucho más fácil. Toca cada paso para abrirlo.</p>
+    </div>
+    <div class="guide__list" id="guideList">
+
+      <details class="guide-item">
+        <summary>
+          <span class="guide-item__num">1</span>
+          <span class="guide-item__title">Presupuesto: no es solo el precio del coche</span>
+          <span class="guide-item__chevron">+</span>
+        </summary>
+        <div class="guide-item__body">
+          <p>Además del precio de compra, un coche cuesta seguro, impuesto de circulación, mantenimiento,
+            neumáticos y, si es de combustión, combustible. Como referencia muy general: un coche de gama
+            media puede suponer entre 150 y 350 € al mes solo en gastos fijos (sin contar la cuota si lo financias),
+            según seguro, combustible y kilómetros.</p>
+          <p>Decide primero cuánto puedes destinar al mes en total y, a partir de ahí, mira precios de compra:
+            así no te enamoras de un coche que luego aprieta el bolsillo cada mes.</p>
+        </div>
+      </details>
+
+      <details class="guide-item">
+        <summary>
+          <span class="guide-item__num">2</span>
+          <span class="guide-item__title">Combustible: gasolina, híbrido, enchufable o eléctrico</span>
+          <span class="guide-item__chevron">+</span>
+        </summary>
+        <div class="guide-item__body">
+          <p><strong>Gasolina:</strong> el más sencillo y barato de comprar, aunque gasta algo más.
+            <strong>Híbrido:</strong> no se enchufa nunca, simplemente gasta menos en ciudad; es la opción
+            más fácil si no quieres complicarte. <strong>Híbrido enchufable (PHEV):</strong> solo tiene sentido
+            si vas a cargarlo de verdad casi todos los días (si no, acabas usándolo como un híbrido normal pero
+            habiendo pagado más). <strong>Eléctrico:</strong> el más barato de "combustible" y mantenimiento,
+            pero conviene poder cargar en casa o el trabajo y mirar la autonomía real (suele ser algo menor
+            que la oficial), no solo el dato de catálogo.</p>
+          <p>El diésel ha perdido peso en coches pequeños y medianos: hoy solo suele compensar si haces muchísima
+            autovía al año.</p>
+        </div>
+      </details>
+
+      <details class="guide-item">
+        <summary>
+          <span class="guide-item__num">3</span>
+          <span class="guide-item__title">Tamaño: para qué lo vas a usar el 90% de los días</span>
+          <span class="guide-item__chevron">+</span>
+        </summary>
+        <div class="guide-item__body">
+          <p>Piensa en tu uso real, no en el viaje especial de una vez al año. Si vas a ir casi siempre solo
+            o en pareja por ciudad, un urbano o compacto te sobra y será más fácil de aparcar. Si hay niños,
+            cochecito, perro o compras de la semana, un SUV o un familiar te dará más tranquilidad. Las 7 plazas
+            solo merecen la pena si realmente las vas a llenar de vez en cuando: si no, restan maletero sin necesidad.</p>
+        </div>
+      </details>
+
+      <details class="guide-item">
+        <summary>
+          <span class="guide-item__num">4</span>
+          <span class="guide-item__title">Nuevo o de ocasión (segunda mano)</span>
+          <span class="guide-item__chevron">+</span>
+        </summary>
+        <div class="guide-item__body">
+          <p><strong>Nuevo:</strong> garantía de fábrica completa, sin sorpresas de uso anterior, pero pierde
+            bastante valor los primeros años. <strong>De ocasión:</strong> mucho más barato por el mismo modelo,
+            pero conviene pedir el historial de mantenimiento, comprobar que pasa la ITV sin pegas y, si puedes,
+            llevarlo a revisar a un taller antes de pagar nada. Esta web se centra en precios de coche nuevo:
+            para uno de pocos años, calcula entre un 15% y un 35% menos según antigüedad y kilómetros.</p>
+        </div>
+      </details>
+
+      <details class="guide-item">
+        <summary>
+          <span class="guide-item__num">5</span>
+          <span class="guide-item__title">Cómo pagarlo: al contado, financiación o renting</span>
+          <span class="guide-item__chevron">+</span>
+        </summary>
+        <div class="guide-item__body">
+          <p><strong>Al contado:</strong> pagas y es tuyo, sin intereses. <strong>Financiación</strong> (del
+            banco o del propio concesionario): pagas en cuotas con intereses, el coche es tuyo desde el principio
+            (o al final, si hay una cuota final grande tipo "valor garantizado"). <strong>Renting:</strong> pagas
+            una cuota fija mensual que normalmente incluye seguro y mantenimiento, pero nunca llegas a ser
+            propietario del coche y suele tener un límite de kilómetros anual. No hay una opción "mejor" en
+            general: depende de si prefieres tener el coche en propiedad o despreocuparte de seguros y averías.</p>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- TOP RECOMENDADOS -->
+  <section class="picks" id="picks">
+    <div class="picks__head">
+      <p class="section__eyebrow">SI TIENES PRISA</p>
+      <h2 class="section__title">Recomendados rápidos</h2>
+      <p class="section__sub">Atajos según lo que más te preocupe. Cada uno abre su ficha completa.</p>
+    </div>
+    <div class="picks__grid" id="picksGrid">
+
+      <button class="pick-card" data-open-id="dacia-sandero">
+        <p class="pick-card__label">Si es tu primer coche</p>
+        <p class="pick-card__name">Dacia Sandero</p>
+        <p class="pick-card__why">El más barato y sencillo de mantener. Para algo más de garantía, mira también el Kia Picanto.</p>
+        <span class="pick-card__btn">Ver ficha</span>
+      </button>
+
+      <button class="pick-card" data-open-id="skoda-kodiaq">
+        <p class="pick-card__label">Si tenéis familia</p>
+        <p class="pick-card__name">Škoda Kodiaq</p>
+        <p class="pick-card__why">7 plazas reales y maletero grande. El Hyundai Tucson es la alternativa de 5 plazas con garantía de 5 años.</p>
+        <span class="pick-card__btn">Ver ficha</span>
+      </button>
+
+      <button class="pick-card" data-open-id="dacia-spring">
+        <p class="pick-card__label">Para probar el eléctrico sin gastar mucho</p>
+        <p class="pick-card__name">Dacia Spring</p>
+        <p class="pick-card__why">El eléctrico nuevo más barato de Europa. Para más autonomía real, mira el Citroën ë-C3.</p>
+        <span class="pick-card__btn">Ver ficha</span>
+      </button>
+
+      <button class="pick-card" data-open-id="toyota-corolla">
+        <p class="pick-card__label">Si no quieres sustos</p>
+        <p class="pick-card__name">Toyota Corolla</p>
+        <p class="pick-card__why">Híbrido, muy fiable y con buena reventa. El Škoda Octavia es la alternativa con más maletero.</p>
+        <span class="pick-card__btn">Ver ficha</span>
+      </button>
+
+      <button class="pick-card" data-open-id="bmw-serie3">
+        <p class="pick-card__label">Si haces mucha carretera</p>
+        <p class="pick-card__name">BMW Serie 3</p>
+        <p class="pick-card__why">Muy cómodo y resuelto a velocidad de autovía. El Toyota Corolla cubre lo mismo gastando menos.</p>
+        <span class="pick-card__btn">Ver ficha</span>
+      </button>
+
+      <button class="pick-card" data-open-id="volvo-xc90">
+        <p class="pick-card__label">Si el presupuesto no es el problema</p>
+        <p class="pick-card__name">Volvo XC90</p>
+        <p class="pick-card__why">7 plazas premium con la seguridad como bandera. El Tesla Model S, si prefieres prestaciones eléctricas extremas.</p>
+        <span class="pick-card__btn">Ver ficha</span>
+      </button>
+
+    </div>
+  </section>
+
+  <!-- EXPLORADOR -->
+  <section class="explorer" id="explorer">
+    <div class="explorer__head">
+      <p class="section__eyebrow">EL CATÁLOGO COMPLETO</p>
+      <h2 class="section__title">Explora los 175 modelos</h2>
+    </div>
+
+    <div class="controls" id="controls">
+      <div class="controls__row">
+        <div class="field field--search">
+          <label for="searchInput">Buscar marca o modelo</label>
+          <input type="text" id="searchInput" placeholder="Ej: Toyota, SUV eléctrico, León…" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="segmentSelect">Tipo de coche</label>
+          <select id="segmentSelect">
+            <option value="all">Todos</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="fuelSelect">Combustible</label>
+          <select id="fuelSelect">
+            <option value="all">Todos</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="priceSelect">Presupuesto</label>
+          <select id="priceSelect">
+            <option value="all">Cualquiera</option>
+            <option value="b1">Hasta 20.000 €</option>
+            <option value="b2">20.000 &ndash; 35.000 €</option>
+            <option value="b3">35.000 &ndash; 55.000 €</option>
+            <option value="b4">Más de 55.000 €</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="sortSelect">Ordenar por</label>
+          <select id="sortSelect">
+            <option value="price-asc">Precio: menor a mayor</option>
+            <option value="price-desc">Precio: mayor a menor</option>
+            <option value="brand-asc">Marca (A&ndash;Z)</option>
+          </select>
+        </div>
+      </div>
+      <p class="controls__count" id="resultCount"></p>
+    </div>
+
+    <div class="grid" id="carGrid"></div>
+    <p class="empty" id="emptyState" hidden>No hay ningún modelo con esos filtros. Prueba a quitar alguno.</p>
+  </section>
+
+  <footer class="footer">
+    <p class="footer__note"><strong>Sobre los datos:</strong> precios, potencias y consumos son orientativos
+      (mercado español, gama aproximada 2025&ndash;2026) y pueden variar según acabado, oferta del concesionario,
+      financiación o impuestos de tu comunidad. Antes de firmar nada, comprueba el precio exacto en el
+      configurador oficial de la marca o pide oferta por escrito en el concesionario.</p>
+  </footer>
+
+</div>
+
+<!-- PANEL DETALLE -->
+<div class="overlay" id="detailOverlay">
+  <div class="panel" id="detailPanel" role="dialog" aria-modal="true" aria-label="Ficha del coche">
+    <button class="panel__close" id="detailClose" aria-label="Cerrar ficha">&times;</button>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<!-- MODAL COMPARADOR -->
+<div class="overlay" id="compareOverlay">
+  <div class="panel panel--wide" id="compareModal" role="dialog" aria-modal="true" aria-label="Comparador de coches">
+    <button class="panel__close" id="compareClose" aria-label="Cerrar comparador">&times;</button>
+    <div id="compareContent"></div>
+  </div>
+</div>
+
+<!-- BANDEJA COMPARADOR -->
+<div class="tray" id="compareTray" hidden>
+  <div class="tray__items" id="trayItems"></div>
+  <div class="tray__actions">
+    <p class="tray__hint" id="trayHint"></p>
+    <button class="btn btn--primary" id="trayCompareBtn" disabled>Comparar</button>
+  </div>
+</div>
+
+<script>
+const CARS = [{"id": "toyota-aygox", "brand": "Toyota", "model": "Aygo X", "segment": "Urbano", "fuel": "Gasolina", "body": "car", "price": [16000, 20500], "power": [72, 99], "spec": ["consumo", 4.8, 5.2], "seats": 4, "tagline": "El utilitario más sencillo y barato de Toyota", "reco": "Si solo necesitas moverte por ciudad y aparcar en hueco difícil, este es de los más fáciles de llevar y de mantener barato. No esperes espacio para 5 ni para viajes largos.", "pros": ["Muy fácil de aparcar y conducir", "Mantenimiento barato y fiable"], "cons": ["Poco espacio trasero y de maletero"], "tags": ["Económico", "Ciudad"]}, {"id": "toyota-yaris", "brand": "Toyota", "model": "Yaris", "segment": "Compacto", "fuel": "Híbrido", "body": "car", "price": [19500, 25500], "power": [116, 116], "spec": ["consumo", 3.8, 4.2], "seats": 5, "tagline": "Híbrido de referencia: gasta poquísimo sin enchufarlo nunca", "reco": "Es de los coches más recomendables para alguien que no entiende de coches: no hay que enchufarlo, gasta muy poco y Toyota tiene fama de muy fiable. Buena entrada al mundo híbrido.", "pros": ["Consumo muy bajo sin cargarlo en ningún enchufe", "Fiabilidad de las más altas del mercado"], "cons": ["Maletero algo pequeño para la categoría"], "tags": ["Fiable", "Ciudad", "Económico"]}, {"id": "toyota-yariscross", "brand": "Toyota", "model": "Yaris Cross", "segment": "SUV", "fuel": "Híbrido", "body": "suv", "price": [23000, 30000], "power": [116, 130], "spec": ["consumo", 4.0, 4.5], "seats": 5, "tagline": "El Yaris con un poco más de altura y maletero", "reco": "Si te gusta la idea del Yaris pero quieres sentarte un poco más alto y tener algo más de maletero, este es el siguiente paso lógico sin disparar el precio.", "pros": ["Mismo consumo bajo del Yaris, más práctico", "Buena visibilidad por la altura"], "cons": ["No es un SUV grande, sigue siendo compacto por dentro"], "tags": ["Fiable", "Familiar"]}, {"id": "toyota-corolla", "brand": "Toyota", "model": "Corolla", "segment": "Compacto", "fuel": "Híbrido", "body": "car", "price": [27000, 34000], "power": [140, 196], "spec": ["consumo", 4.3, 4.8], "seats": 5, "tagline": "Berlina/compacto híbrido cómodo para el día a día y la autovía", "reco": "Buena opción si haces bastante carretera además de ciudad: va sobrado de potencia híbrida, es cómodo y Toyota da mucha tranquilidad a largo plazo.", "pros": ["Cómodo también en viajes largos", "Muy fiable, baja depreciación"], "cons": ["Maletero algo justo si lo coges en carrocería sedán"], "tags": ["Fiable", "Familiar"]}, {"id": "toyota-chr", "brand": "Toyota", "model": "C-HR", "segment": "SUV", "fuel": "Híbrido enchufable", "body": "suv", "price": [31000, 42000], "power": [140, 223], "spec": ["consumo", 4.5, 5.0], "seats": 5, "tagline": "El SUV de diseño más atrevido de Toyota, con versión enchufable", "reco": "Si valoras que tu coche destaque visualmente y puedes cargarlo en un enchufe (aunque sea uno normal de casa), la versión enchufable te puede sacar de moverte en eléctrico la mayoría de trayectos cortos.", "pros": ["Diseño muy diferenciador", "Versión enchufable ahorra mucho en uso urbano"], "cons": ["Visibilidad trasera limitada por el diseño", "Plazas traseras algo justas de luz/espacio"], "tags": ["Premium"]}, {"id": "toyota-rav4", "brand": "Toyota", "model": "RAV4", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [38000, 52000], "power": [222, 306], "spec": ["consumo", 5.0, 5.8], "seats": 5, "tagline": "El SUV familiar grande de Toyota, también enchufable", "reco": "Para familias que necesitan un SUV grande de verdad y quieren la tranquilidad de la marca más fiable del sector. La versión PHEV es de las más completas si tienes dónde cargar.", "pros": ["Muy espacioso para familia", "Fiabilidad y valor de reventa altos"], "cons": ["Precio sube bastante en las versiones top"], "tags": ["Familiar", "Fiable"]}, {"id": "vw-polo", "brand": "Volkswagen", "model": "Polo", "segment": "Compacto", "fuel": "Gasolina", "body": "car", "price": [19000, 27000], "power": [80, 150], "spec": ["consumo", 5.0, 5.6], "seats": 5, "tagline": "El utilitario \"premium\" de toda la vida, bien construido", "reco": "Si quieres un coche pequeño que se sienta sólido y de calidad por dentro, sin ser eléctrico ni híbrido, el Polo cumple de sobra. Es algo más caro que sus rivales por eso mismo.", "pros": ["Acabados e insonorización notables para su tamaño", "Buena red de talleres VW en toda España"], "cons": ["Precio alto frente a rivales con más equipamiento"], "tags": ["Ciudad"]}, {"id": "vw-tcross", "brand": "Volkswagen", "model": "T-Cross", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [23000, 31000], "power": [95, 150], "spec": ["consumo", 5.4, 6.0], "seats": 5, "tagline": "SUV pequeño práctico, hermano elevado del Polo", "reco": "Buena opción si quieres más maletero y altura que un utilitario normal, sin pasarte de presupuesto ni de tamaño para aparcar en ciudad.", "pros": ["Maletero grande para su categoría", "Buena posición de conducción"], "cons": ["Motores de acceso algo flojos de potencia"], "tags": ["Familiar"]}, {"id": "vw-golf", "brand": "Volkswagen", "model": "Golf", "segment": "Compacto", "fuel": "Gasolina", "body": "car", "price": [28000, 42000], "power": [116, 245], "spec": ["consumo", 5.4, 6.5], "seats": 5, "tagline": "El compacto de referencia en Europa desde hace 40 años", "reco": "Es la apuesta segura del segmento: ni el más barato ni el más espectacular, pero difícil que te decepcione en conducción, calidad y revalorización.", "pros": ["Equilibrio entre conducción, calidad y espacio", "Gran oferta de motores, del eficiente al GTI"], "cons": ["Pantallas táctiles del interior algo criticadas en uso diario"], "tags": ["Fiable"]}, {"id": "vw-tiguan", "brand": "Volkswagen", "model": "Tiguan", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [36000, 52000], "power": [150, 272], "spec": ["consumo", 5.5, 6.5], "seats": 5, "tagline": "El SUV familiar más vendido de VW en España", "reco": "Si la familia ha crecido y necesitas un SUV grande de marca generalista con buena imagen de fiabilidad, es de los más seguros de elegir. La versión enchufable tiene bastante autonomía eléctrica para el día a día.", "pros": ["Muy espacioso, ideal para familia", "eHybrid permite hacer trayectos cortos en eléctrico"], "cons": ["Precio se acerca al de un SUV premium en versiones altas"], "tags": ["Familiar", "Fiable"]}, {"id": "vw-id3", "brand": "Volkswagen", "model": "ID.3", "segment": "Compacto", "fuel": "Eléctrico", "body": "car", "price": [36000, 43000], "power": [170, 204], "spec": ["autonomia", 350, 450], "seats": 5, "tagline": "El eléctrico compacto de VW, pensado para el día a día", "reco": "Buen primer eléctrico si haces sobre todo trayectos urbanos e interurbanos y puedes cargar en casa o en el trabajo. El software ha mejorado mucho respecto a las primeras unidades.", "pros": ["Autonomía suficiente para el uso diario habitual", "Interior espacioso para ser compacto"], "cons": ["Software del salpicadero algo menos intuitivo que la competencia"], "tags": ["Eléctrico", "Ciudad"]}, {"id": "vw-id4", "brand": "Volkswagen", "model": "ID.4", "segment": "SUV grande", "fuel": "Eléctrico", "body": "suv", "price": [43000, 55000], "power": [170, 340], "spec": ["autonomia", 400, 520], "seats": 5, "tagline": "SUV eléctrico familiar, el ID.3 con más espacio", "reco": "Si quieres dar el salto a eléctrico pero necesitas el espacio de un SUV familiar, esta es una de las opciones más completas y con buena autonomía real.", "pros": ["Buen espacio y maletero para familia", "Autonomía real alta en la mayoría de versiones"], "cons": ["Precio elevado en acabados altos y versión GTX"], "tags": ["Eléctrico", "Familiar"]}, {"id": "seat-ibiza", "brand": "SEAT", "model": "Ibiza", "segment": "Compacto", "fuel": "Gasolina", "body": "car", "price": [17500, 24500], "power": [80, 150], "spec": ["consumo", 5.2, 6.0], "seats": 5, "tagline": "Utilitario español de toda la vida, ágil y bien de precio", "reco": "Buena opción si quieres algo de carácter deportivo en un coche pequeño y asequible, sin necesidad de pasarte a SUV.", "pros": ["Buen precio para el equipamiento que ofrece", "Conducción ágil, divertido en ciudad"], "cons": ["Plazas traseras algo ajustadas para adultos altos"], "tags": ["Económico", "Ciudad"]}, {"id": "seat-arona", "brand": "SEAT", "model": "Arona", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [21000, 28500], "power": [95, 150], "spec": ["consumo", 5.4, 6.1], "seats": 5, "tagline": "El SUV pequeño de SEAT, hermano del Ibiza", "reco": "Si te gusta el Ibiza pero quieres algo más de altura y maletero, este cubre ese hueco sin disparar el presupuesto.", "pros": ["Maletero amplio para su tamaño", "Buen equipamiento de seguridad de serie"], "cons": ["Tacto de algunos materiales interiores mejorable"], "tags": ["Familiar"]}, {"id": "seat-leon", "brand": "SEAT", "model": "León", "segment": "Compacto", "fuel": "Gasolina", "body": "car", "price": [26000, 38000], "power": [110, 300], "spec": ["consumo", 5.5, 6.5], "seats": 5, "tagline": "El compacto más completo de SEAT, también en versión familiar (ST)", "reco": "Buena alternativa al Golf con un punto más de carácter deportivo y, normalmente, un precio algo más ajustado por equipamiento similar.", "pros": ["Buena relación equipamiento/precio frente al Golf", "Versión familiar (ST) con maletero muy grande"], "cons": ["Acabados interiores un escalón por debajo de Audi/VW"], "tags": ["Deportivo"]}, {"id": "seat-ateca", "brand": "SEAT", "model": "Ateca", "segment": "SUV grande", "fuel": "Gasolina", "body": "suv", "price": [29000, 40000], "power": [110, 190], "spec": ["consumo", 5.8, 6.8], "seats": 5, "tagline": "SUV familiar de tamaño medio, conducción ágil", "reco": "Si buscas un SUV de tamaño medio con un punto más de agilidad al volante que la media de la categoría, es una opción a tener en cuenta.", "pros": ["Conducción más ágil que la media del segmento", "Buen espacio interior"], "cons": ["No ofrece versión enchufable ni eléctrica"], "tags": ["Familiar"]}, {"id": "seat-tarraco", "brand": "SEAT", "model": "Tarraco", "segment": "SUV grande", "fuel": "Gasolina", "body": "suv", "price": [37000, 48000], "power": [150, 245], "spec": ["consumo", 6.5, 7.5], "seats": 7, "tagline": "El SUV de 7 plazas de SEAT", "reco": "Si sois familia numerosa o necesitáis llevar a los abuelos de vez en cuando, las 7 plazas reales (las dos últimas mejor para niños) son el motivo principal para elegirlo.", "pros": ["7 plazas útiles, raro en este precio", "Maletero grande incluso con 5 plazas en uso"], "cons": ["Tamaño grande para aparcar en ciudades antiguas"], "tags": ["Familiar", "7 plazas"]}, {"id": "cupra-born", "brand": "CUPRA", "model": "Born", "segment": "Compacto", "fuel": "Eléctrico", "body": "car", "price": [38000, 48000], "power": [150, 326], "spec": ["autonomia", 420, 560], "seats": 5, "tagline": "El eléctrico deportivo de CUPRA, hermano del ID.3", "reco": "Si quieres un eléctrico con algo más de carácter y look deportivo que un ID.3, sin perder la base sólida de VW, este es de los más divertidos de conducir de su categoría.", "pros": ["Conducción divertida para un eléctrico de su tamaño", "Buena autonomía en versiones intermedias"], "cons": ["Maletero algo pequeño para el segmento"], "tags": ["Eléctrico", "Deportivo"]}, {"id": "cupra-leon", "brand": "CUPRA", "model": "León", "segment": "Compacto", "fuel": "Híbrido enchufable", "body": "car", "price": [36000, 45000], "power": [245, 333], "spec": ["consumo", 1.5, 6.5], "seats": 5, "tagline": "El SEAT León convertido en deportivo de altas prestaciones", "reco": "Para quien quiere un compacto con prestaciones serias de fábrica sin pasarse a un premium alemán de altas gamas. La versión e-Hybrid permite además moverte en eléctrico por ciudad.", "pros": ["Prestaciones muy altas para el precio", "e-Hybrid combina deportividad y trayectos urbanos en eléctrico"], "cons": ["Suspensión deportiva se nota en firmes en mal estado"], "tags": ["Deportivo"]}, {"id": "cupra-formentor", "brand": "CUPRA", "model": "Formentor", "segment": "SUV", "fuel": "Híbrido enchufable", "body": "suv", "price": [38000, 55000], "power": [150, 333], "spec": ["consumo", 1.5, 7.0], "seats": 5, "tagline": "El SUV-coupé que ha puesto a CUPRA en el mapa", "reco": "Si quieres un SUV que no parezca uno más del montón y te importa la imagen tanto como las prestaciones, este es probablemente el modelo más reconocible de la marca.", "pros": ["Diseño muy diferenciado, alta calidad percibida", "Gama de motores muy amplia, del eficiente al VZ de altas prestaciones"], "cons": ["Maletero algo penalizado por el diseño coupé"], "tags": ["Premium", "Deportivo"]}, {"id": "cupra-tavascan", "brand": "CUPRA", "model": "Tavascan", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [46000, 58000], "power": [286, 340], "spec": ["autonomia", 480, 540], "seats": 5, "tagline": "SUV-coupé 100% eléctrico, el buque insignia eléctrico de CUPRA", "reco": "Para quien quiere un eléctrico premium con mucha presencia visual y no le importa pagar un poco más por diseño y prestaciones frente a un VW ID.4 o ID.5.", "pros": ["Diseño y acabados muy por encima de la media", "Buenas prestaciones y autonomía"], "cons": ["Precio elevado frente a eléctricos del grupo VW más sencillos"], "tags": ["Eléctrico", "Premium"]}, {"id": "cupra-terramar", "brand": "CUPRA", "model": "Terramar", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [42000, 55000], "power": [150, 272], "spec": ["consumo", 1.6, 7.0], "seats": 5, "tagline": "El SUV grande más reciente de la gama CUPRA", "reco": "Si necesitas un SUV de tamaño grande con la imagen y el carácter CUPRA, es la opción más nueva de la marca pensada para competir con SUV premium alemanes de tamaño medio-grande.", "pros": ["Espacio y prestaciones de SUV grande", "Buen nivel de equipamiento tecnológico de serie"], "cons": ["Modelo muy reciente, menos recorrido para valorar fiabilidad a largo plazo"], "tags": ["Premium", "Familiar"]}, {"id": "renault-clio", "brand": "Renault", "model": "Clio", "segment": "Compacto", "fuel": "Híbrido", "body": "car", "price": [18000, 26000], "power": [65, 145], "spec": ["consumo", 4.3, 5.8], "seats": 5, "tagline": "Utilitario superventas en España, con buena opción híbrida", "reco": "Si quieres ahorrar en consumo sin pasarte a eléctrico ni complicarte con enchufes, la versión E-Tech full hybrid es de las más interesantes de su categoría por precio.", "pros": ["Versión híbrida reduce mucho el consumo en ciudad", "Buen nivel de equipamiento de serie"], "cons": ["Maletero algo reducido en la versión híbrida"], "tags": ["Económico", "Ciudad"]}, {"id": "renault-captur", "brand": "Renault", "model": "Captur", "segment": "SUV", "fuel": "Híbrido enchufable", "body": "suv", "price": [24000, 33000], "power": [90, 160], "spec": ["consumo", 1.2, 6.0], "seats": 5, "tagline": "SUV pequeño con asiento trasero deslizante, muy versátil", "reco": "Si necesitas un SUV pequeño pero flexible (a veces más maletero, a veces más sitio para piernas), el asiento corredizo trasero es un detalle práctico poco habitual en este tamaño.", "pros": ["Asiento trasero deslizante, muy versátil", "Versión enchufable con autonomía eléctrica útil en ciudad"], "cons": ["Calidad de algunos materiales interiores justa"], "tags": ["Familiar"]}, {"id": "renault-meganee", "brand": "Renault", "model": "Mégane E-Tech", "segment": "Compacto", "fuel": "Eléctrico", "body": "car", "price": [36000, 44000], "power": [130, 220], "spec": ["autonomia", 300, 450], "seats": 5, "tagline": "Eléctrico de diseño muy cuidado, buen equilibrio precio/autonomía", "reco": "Buena opción de eléctrico de marca generalista si valoras el diseño exterior e interior por encima de tener el maletero más grande posible.", "pros": ["Diseño interior y exterior muy logrado", "Buena relación autonomía/precio en la versión grande batería"], "cons": ["Maletero algo por debajo de la media del segmento"], "tags": ["Eléctrico"]}, {"id": "renault-austral", "brand": "Renault", "model": "Austral", "segment": "SUV grande", "fuel": "Híbrido", "body": "suv", "price": [33000, 45000], "power": [130, 200], "spec": ["consumo", 4.8, 5.5], "seats": 5, "tagline": "SUV familiar con pantallas grandes y buen nivel tecnológico", "reco": "Si valoras la tecnología a bordo (pantallas, asistentes) tanto como el espacio, es de los SUV generalistas mejor equipados en ese aspecto.", "pros": ["Pantallas y asistencia a la conducción de nivel alto", "Consumo contenido gracias a la hibridación"], "cons": ["Algunos menús táctiles requieren acostumbrarse"], "tags": ["Familiar"]}, {"id": "renault-scenicE", "brand": "Renault", "model": "Scenic E-Tech", "segment": "SUV grande", "fuel": "Eléctrico", "body": "suv", "price": [42000, 50000], "power": [125, 220], "spec": ["autonomia", 420, 620], "seats": 5, "tagline": "SUV familiar eléctrico con muchísima autonomía", "reco": "Una de las mejores opciones si necesitas un eléctrico familiar para hacer también viajes largos: la autonomía en la versión grande es de las más altas que vas a encontrar a este precio.", "pros": ["Autonomía muy alta en la versión de batería grande", "Espacio interior muy bien aprovechado"], "cons": ["Precio sube notablemente en la versión de mayor autonomía"], "tags": ["Eléctrico", "Familiar"]}, {"id": "peugeot-208", "brand": "Peugeot", "model": "208", "segment": "Compacto", "fuel": "Gasolina", "body": "car", "price": [20000, 32000], "power": [75, 156], "spec": ["consumo", 5.0, 5.8], "seats": 5, "tagline": "Utilitario de diseño llamativo, también disponible 100% eléctrico (e-208)", "reco": "Si lo que más te importa es que el coche tenga un diseño interior y exterior diferente a la media, el 208 destaca especialmente en eso, tanto en gasolina como en su versión eléctrica.", "pros": ["Interior \"i-Cockpit\" muy diferenciado", "Existe versión 100% eléctrica (e-208) con buena autonomía urbana"], "cons": ["El volante pequeño del i-Cockpit no convence a todo el mundo"], "tags": ["Ciudad"]}, {"id": "peugeot-2008", "brand": "Peugeot", "model": "2008", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [25000, 37000], "power": [100, 156], "spec": ["consumo", 5.3, 6.0], "seats": 5, "tagline": "SUV pequeño con el mismo diseño llamativo del 208", "reco": "El SUV pequeño a elegir si te ha gustado el 208 pero quieres algo más de altura y maletero, manteniendo ese interior tan particular.", "pros": ["Buen maletero para su categoría", "Versión eléctrica (e-2008) disponible"], "cons": ["Visibilidad delantera del salpicadero requiere acostumbrarse"], "tags": ["Familiar"]}, {"id": "peugeot-308", "brand": "Peugeot", "model": "308", "segment": "Compacto", "fuel": "Híbrido enchufable", "body": "car", "price": [28000, 40000], "power": [100, 225], "spec": ["consumo", 1.3, 6.5], "seats": 5, "tagline": "Compacto de Peugeot, también en familiar (SW) y enchufable", "reco": "Una alternativa con personalidad propia a Golf/León, especialmente interesante en su versión enchufable si puedes cargarlo en casa.", "pros": ["Diseño exterior muy logrado", "Versión SW (familiar) con buen maletero"], "cons": ["Plazas traseras algo justas de espacio para las piernas"], "tags": ["Familiar"]}, {"id": "peugeot-3008", "brand": "Peugeot", "model": "3008", "segment": "SUV grande", "fuel": "Eléctrico", "body": "suv", "price": [37000, 50000], "power": [136, 326], "spec": ["autonomia", 330, 525], "seats": 5, "tagline": "SUV familiar de nueva generación, con versión 100% eléctrica", "reco": "La generación más reciente del 3008 ha apostado fuerte por la versión eléctrica; si necesitas un SUV familiar y quieres pasarte a eléctrico, es de las opciones más nuevas y completas en diseño.", "pros": ["Diseño interior y exterior muy moderno", "Buena autonomía en la versión eléctrica de batería grande"], "cons": ["Modelo reciente, precio todavía elevado en versiones altas"], "tags": ["Eléctrico", "Familiar"]}, {"id": "peugeot-5008", "brand": "Peugeot", "model": "5008", "segment": "SUV grande", "fuel": "Híbrido", "body": "suv", "price": [40000, 52000], "power": [136, 228], "spec": ["consumo", 5.0, 6.0], "seats": 7, "tagline": "El SUV de 7 plazas de Peugeot, nueva generación", "reco": "Si necesitas 7 plazas reales con un diseño más actual que el de la generación anterior, esta nueva versión del 5008 es de las opciones más recientes en este segmento.", "pros": ["7 plazas con buen acceso a la tercera fila", "Diseño y tecnología de última generación"], "cons": ["Maletero se reduce bastante usando las 7 plazas"], "tags": ["Familiar", "7 plazas"]}, {"id": "citroen-c3", "brand": "Citroën", "model": "C3", "segment": "Compacto", "fuel": "Gasolina", "body": "car", "price": [17000, 25000], "power": [83, 113], "spec": ["consumo", 5.0, 5.6], "seats": 5, "tagline": "Utilitario cómodo, con una versión 100% eléctrica muy económica (ë-C3)", "reco": "Si tu prioridad es la comodidad de marcha y el precio, Citroën cuida especialmente la suspensión. La versión ë-C3 eléctrica es además una de las más baratas del mercado para entrar al eléctrico.", "pros": ["Suspensión muy cómoda en carretera con baches", "ë-C3 es uno de los eléctricos más baratos del mercado"], "cons": ["Prestaciones de los motores de gasolina de acceso ajustadas"], "tags": ["Económico", "Ciudad", "Eléctrico"]}, {"id": "citroen-c3aircross", "brand": "Citroën", "model": "C3 Aircross", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [21000, 29000], "power": [100, 136], "spec": ["consumo", 5.4, 6.0], "seats": 5, "tagline": "SUV pequeño con opción de 7 plazas, raro en este tamaño", "reco": "Si necesitas la posibilidad de llevar dos plazas extra ocasionalmente (para niños, sobre todo) sin pasar a un SUV grande, este es de los pocos que lo ofrecen en tamaño compacto.", "pros": ["Opción de 7 plazas poco habitual en SUV pequeño", "Buena comodidad de marcha"], "cons": ["Las plazas 6ª y 7ª son solo aptas para niños o trayectos cortos"], "tags": ["Familiar"]}, {"id": "citroen-c4", "brand": "Citroën", "model": "C4", "segment": "Compacto", "fuel": "Eléctrico", "body": "car", "price": [27000, 37000], "power": [100, 156], "spec": ["autonomia", 360, 360], "seats": 5, "tagline": "Compacto de diseño tipo SUV-coupé, también eléctrico (ë-C4)", "reco": "Si te gustan los SUV-coupé pero el precio de los premium se te va de presupuesto, el C4 ofrece ese estilo en un compacto generalista, con versión eléctrica incluida.", "pros": ["Diseño exterior muy diferenciado en su categoría", "Suspensión cómoda, buena para trayectos largos"], "cons": ["Visibilidad trasera reducida por el diseño"], "tags": ["Eléctrico"]}, {"id": "citroen-c5aircross", "brand": "Citroën", "model": "C5 Aircross", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [33000, 42000], "power": [130, 225], "spec": ["consumo", 1.3, 6.5], "seats": 5, "tagline": "SUV familiar, de los más cómodos de conducir del mercado", "reco": "Si lo que buscas ante todo es comodidad para viajar (suspensión que filtra muy bien los baches), pocos SUV de este precio lo hacen tan bien como este.", "pros": ["Suspensión de las más cómodas del segmento", "Buen espacio interior y maletero"], "cons": ["Motores de gasolina sin hibridar algo justos de respuesta"], "tags": ["Familiar"]}, {"id": "citroen-berlingo", "brand": "Citroën", "model": "Berlingo", "segment": "Familiar", "fuel": "Gasolina", "body": "suv", "price": [26000, 35000], "power": [100, 130], "spec": ["consumo", 5.5, 6.5], "seats": 7, "tagline": "Furgoneta familiar: el rey del espacio por precio", "reco": "Si lo que necesitas es espacio puro y duro (cochecitos, perros grandes, mudanzas familiares de fin de semana) por encima de la estética, ningún SUV te da tanto espacio por este dinero.", "pros": ["Espacio interior y maletero enormes para el precio", "Puertas correderas, muy práctico para sillas de niño"], "cons": ["Estética poco \"deseable\" frente a un SUV"], "tags": ["Familiar", "7 plazas"]}, {"id": "opel-corsa", "brand": "Opel", "model": "Corsa", "segment": "Compacto", "fuel": "Gasolina", "body": "car", "price": [19000, 32000], "power": [75, 156], "spec": ["consumo", 5.0, 5.6], "seats": 5, "tagline": "Utilitario alemán de toda la vida, también 100% eléctrico", "reco": "Comparte mucho con el Peugeot 208 (mismo grupo) pero con un diseño más discreto; si prefieres no llamar tanto la atención, esta es la alternativa más \"de toda la vida\".", "pros": ["Conducción sencilla y predecible", "Versión eléctrica (Corsa Electric) con buena autonomía urbana"], "cons": ["Diseño interior más anodino que el de su hermano Peugeot 208"], "tags": ["Ciudad"]}, {"id": "opel-mokka", "brand": "Opel", "model": "Mokka", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [25000, 37000], "power": [100, 156], "spec": ["consumo", 5.3, 6.0], "seats": 5, "tagline": "SUV pequeño con un diseño exterior más arriesgado que el Corsa", "reco": "Si te gusta el diseño exterior llamativo (el frontal \"Vizor\" de Opel) pero el resto de necesidades son las de un SUV pequeño normal, cumple sin sorpresas.", "pros": ["Diseño exterior muy reconocible", "Versión eléctrica disponible"], "cons": ["Plazas traseras algo ajustadas de espacio"], "tags": ["Familiar"]}, {"id": "opel-astra", "brand": "Opel", "model": "Astra", "segment": "Compacto", "fuel": "Híbrido enchufable", "body": "car", "price": [28000, 42000], "power": [110, 225], "spec": ["consumo", 1.2, 6.0], "seats": 5, "tagline": "Compacto alemán, alternativa a Golf/León con precio algo más ajustado", "reco": "Si quieres algo con sensaciones de conducción \"alemanas\" sin pagar el precio de un Volkswagen, el Astra suele tener ofertas más agresivas por el mismo nivel de plataforma.", "pros": ["Misma plataforma técnica que Peugeot/Citroën pero ofertas más agresivas", "Versión familiar (Sports Tourer) con buen maletero"], "cons": ["Imagen de marca menos premium que VW/Audi"], "tags": ["Económico"]}, {"id": "opel-grandland", "brand": "Opel", "model": "Grandland", "segment": "SUV grande", "fuel": "Eléctrico", "body": "suv", "price": [35000, 48000], "power": [136, 326], "spec": ["autonomia", 330, 525], "seats": 5, "tagline": "SUV familiar de nueva generación, también 100% eléctrico", "reco": "Versión hermana del Peugeot 3008/5008 con un punto de precio normalmente algo más competitivo; buena opción si priorizas el bolsillo sobre el prestigio de marca.", "pros": ["Buen espacio familiar", "Versión eléctrica con autonomía competitiva"], "cons": ["Modelo reciente, menos historial de fiabilidad a largo plazo"], "tags": ["Eléctrico", "Familiar"]}, {"id": "opel-crossland", "brand": "Opel", "model": "Crossland", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [22000, 29000], "power": [100, 130], "spec": ["consumo", 5.6, 6.2], "seats": 5, "tagline": "SUV pequeño sencillo y asequible", "reco": "Si quieres un SUV pequeño sin complicaciones ni versiones eléctricas/híbridas, y priorizas el precio de entrada, es de los más asequibles de su categoría.", "pros": ["Precio de entrada competitivo", "Maletero amplio para su tamaño"], "cons": ["Equipamiento tecnológico más básico que sus rivales"], "tags": ["Económico", "Familiar"]}, {"id": "ford-puma", "brand": "Ford", "model": "Puma", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [24000, 34000], "power": [125, 170], "spec": ["consumo", 5.3, 5.9], "seats": 5, "tagline": "SUV pequeño con el maletero más ingenioso de su categoría", "reco": "El maletero \"MegaBox\" (con hueco extra hondo y desagüe) es un detalle realmente útil si llevas botas de barro, perros o material deportivo; aparte de eso, es de los SUV pequeños más divertidos de conducir.", "pros": ["Maletero MegaBox muy versátil (hueco extra con desagüe)", "Conducción más ágil que la media del segmento"], "cons": ["Plazas traseras algo ajustadas para adultos"], "tags": ["Deportivo", "Familiar"]}, {"id": "ford-kuga", "brand": "Ford", "model": "Kuga", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [33000, 46000], "power": [150, 243], "spec": ["consumo", 1.1, 6.5], "seats": 5, "tagline": "SUV familiar de Ford, con una de las versiones enchufables más completas", "reco": "La versión PHEV del Kuga tiene bastante autonomía eléctrica para el día a día; buena opción si tienes donde cargar y quieres reducir mucho el gasto en gasolina sin pasarte a 100% eléctrico.", "pros": ["Versión PHEV con autonomía eléctrica útil (~50-60 km)", "Buen espacio interior y maletero"], "cons": ["Maletero se reduce algo en la versión enchufable por la batería"], "tags": ["Familiar"]}, {"id": "ford-explorer", "brand": "Ford", "model": "Explorer (eléctrico)", "segment": "SUV grande", "fuel": "Eléctrico", "body": "suv", "price": [42000, 52000], "power": [170, 340], "spec": ["autonomia", 500, 602], "seats": 5, "tagline": "SUV eléctrico familiar de Ford, construido sobre tecnología de VW", "reco": "Es un eléctrico familiar con buena autonomía real; al usar la base técnica del grupo VW (motores/baterías) hereda gran parte de su fiabilidad probada en el ID.4.", "pros": ["Autonomía alta en versiones de batería grande", "Pantalla central deslizante con hueco de almacenaje detrás, detalle práctico"], "cons": ["Pocas unidades en circulación todavía, historial de fiabilidad corto"], "tags": ["Eléctrico", "Familiar"]}, {"id": "ford-mache", "brand": "Ford", "model": "Mustang Mach-E", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [46000, 62000], "power": [269, 487], "spec": ["autonomia", 480, 600], "seats": 5, "tagline": "SUV-coupé eléctrico con vocación deportiva, herencia Mustang", "reco": "Si quieres un eléctrico con carácter deportivo de verdad (la versión GT acelera como un deportivo serio) y no te importa que el maletero no sea lo más grande de su precio, es de los más divertidos de conducir.", "pros": ["Prestaciones muy altas en la versión GT", "Diseño con mucha personalidad"], "cons": ["Maletero algo por debajo de la media para el precio"], "tags": ["Eléctrico", "Deportivo"]}, {"id": "hyundai-i20", "brand": "Hyundai", "model": "i20", "segment": "Compacto", "fuel": "Gasolina", "body": "car", "price": [18500, 25500], "power": [84, 100], "spec": ["consumo", 5.2, 5.8], "seats": 5, "tagline": "Utilitario coreano con buen equipamiento de serie y garantía larga", "reco": "Si te preocupa que un coche \"se quede corto\" de equipamiento básico (sensores, pantalla, asistentes), Hyundai suele incluir más de serie que muchos rivales europeos al mismo precio.", "pros": ["Buen equipamiento de serie incluso en versiones de acceso", "Garantía de 5 años de fábrica"], "cons": ["Conducción algo menos refinada que VW/SEAT en este segmento"], "tags": ["Económico", "Ciudad"]}, {"id": "hyundai-bayon", "brand": "Hyundai", "model": "Bayon", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [21000, 27500], "power": [84, 100], "spec": ["consumo", 5.5, 6.0], "seats": 5, "tagline": "SUV pequeño, hermano elevado del i20", "reco": "Igual que con el i20, destaca por el equipamiento de serie y la garantía; buena opción si priorizas eso por encima del prestigio de marca.", "pros": ["Garantía de 5 años", "Buen maletero para su categoría"], "cons": ["Motores de acceso poco potentes para autovía con el coche cargado"], "tags": ["Familiar"]}, {"id": "hyundai-i30", "brand": "Hyundai", "model": "i30", "segment": "Compacto", "fuel": "Gasolina", "body": "car", "price": [25000, 33000], "power": [120, 160], "spec": ["consumo", 5.8, 6.5], "seats": 5, "tagline": "Compacto con buena relación calidad-precio, también en familiar", "reco": "Buena alternativa \"sensata\" a Golf/León si priorizas el precio y la garantía por encima de la imagen de marca premium.", "pros": ["Garantía de 5 años de fábrica", "Versión familiar (Wagon) con maletero amplio"], "cons": ["Menor valor de reventa que VW/SEAT/Toyota"], "tags": ["Económico"]}, {"id": "hyundai-tucson", "brand": "Hyundai", "model": "Tucson", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [32000, 46000], "power": [136, 265], "spec": ["consumo", 1.5, 6.5], "seats": 5, "tagline": "Uno de los SUV familiares más vendidos en España", "reco": "Es de las opciones más equilibradas si buscas un SUV familiar grande: buen espacio, tecnología moderna, garantía larga y versión PHEV muy completa.", "pros": ["Garantía de 5 años, de las más largas del mercado", "Versión PHEV con autonomía eléctrica generosa"], "cons": ["Pantallas táctiles pueden distraer si no te familiarizas antes"], "tags": ["Familiar", "Fiable"]}, {"id": "hyundai-kona", "brand": "Hyundai", "model": "Kona", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [24000, 42000], "power": [100, 218], "spec": ["autonomia", 377, 490], "seats": 5, "tagline": "SUV pequeño disponible en gasolina, híbrido o 100% eléctrico", "reco": "Tener las tres versiones de motor en el mismo modelo te permite \"probar\" el eléctrico sin cambiar de coche que te gusta si en el futuro decides cambiar de combustible.", "pros": ["Disponible en gasolina, híbrido y eléctrico con el mismo diseño", "Versión eléctrica con autonomía alta para su tamaño"], "cons": ["La versión eléctrica tiene un sobrecoste importante frente a la de gasolina"], "tags": ["Eléctrico", "Familiar"]}, {"id": "hyundai-ioniq5", "brand": "Hyundai", "model": "Ioniq 5", "segment": "SUV grande", "fuel": "Eléctrico", "body": "suv", "price": [42000, 58000], "power": [170, 325], "spec": ["autonomia", 450, 570], "seats": 5, "tagline": "Eléctrico de diseño retro-futurista, carga muy rápido", "reco": "Si vas a hacer viajes largos en eléctrico habitualmente, su carga ultrarrápida (800V) es una de las más rápidas del mercado, lo que reduce mucho el tiempo parado en los repostajes.", "pros": ["Carga ultrarrápida, de las más veloces del mercado", "Interior muy espacioso, suelo plano"], "cons": ["Diseño exterior muy marcado, no gusta a todo el mundo"], "tags": ["Eléctrico", "Premium"]}, {"id": "kia-picanto", "brand": "Kia", "model": "Picanto", "segment": "Urbano", "fuel": "Gasolina", "body": "car", "price": [14000, 18500], "power": [63, 84], "spec": ["consumo", 4.9, 5.4], "seats": 4, "tagline": "De los coches nuevos más baratos del mercado español", "reco": "Si tu presupuesto es ajustado y solo necesitas un coche para ciudad y trayectos cortos, es de las opciones nuevas más económicas, con la garantía larga de Kia como añadido.", "pros": ["Uno de los coches nuevos más baratos de España", "Garantía de 7 años de fábrica"], "cons": ["Muy poco espacio para 4 adultos o maletas grandes"], "tags": ["Económico", "Ciudad"]}, {"id": "kia-stonic", "brand": "Kia", "model": "Stonic", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [20500, 27000], "power": [84, 120], "spec": ["consumo", 5.3, 5.9], "seats": 5, "tagline": "SUV pequeño económico con garantía larga", "reco": "Buena opción si quieres un SUV pequeño sin gastar mucho y la garantía de 7 años te da tranquilidad para quedarte con él muchos años.", "pros": ["Garantía de 7 años de fábrica", "Precio competitivo en su categoría"], "cons": ["Maletero algo por debajo de la media del segmento"], "tags": ["Económico", "Familiar"]}, {"id": "kia-sportage", "brand": "Kia", "model": "Sportage", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [31000, 45000], "power": [136, 265], "spec": ["consumo", 1.5, 6.5], "seats": 5, "tagline": "Uno de los SUV familiares más completos, con garantía de 7 años", "reco": "Si la garantía larga te da tranquilidad para comprar y olvidarte de sustos durante muchos años, este SUV familiar reúne espacio, tecnología y ese plus de garantía de 7 años único en el mercado.", "pros": ["Garantía de 7 años, la más larga del sector", "Buen espacio y tecnología a bordo"], "cons": ["Pantallas táctiles del climatizador, algunos prefieren botones físicos"], "tags": ["Familiar", "Fiable"]}, {"id": "kia-niro", "brand": "Kia", "model": "Niro", "segment": "SUV", "fuel": "Híbrido", "body": "suv", "price": [30000, 45000], "power": [141, 204], "spec": ["consumo", 4.4, 4.8], "seats": 5, "tagline": "SUV disponible en híbrido, enchufable o 100% eléctrico", "reco": "Como el Kona, tener varias versiones de motor en la misma carrocería es ideal si no estás seguro de si dar el salto a eléctrico o quedarte con un híbrido de momento.", "pros": ["Las tres versiones de combustible en el mismo diseño", "Garantía de 7 años"], "cons": ["La versión eléctrica tiene menos autonomía que sus rivales directos"], "tags": ["Eléctrico", "Familiar"]}, {"id": "kia-ev6", "brand": "Kia", "model": "EV6", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [46000, 62000], "power": [170, 325], "spec": ["autonomia", 510, 590], "seats": 5, "tagline": "Eléctrico deportivo, hermano técnico del Ioniq 5", "reco": "Si te gusta el Ioniq 5 pero prefieres un diseño más deportivo/coupé y la garantía de 7 años de Kia, el EV6 ofrece la misma tecnología de carga ultrarrápida con otra estética.", "pros": ["Carga ultrarrápida (800V)", "Garantía de 7 años de fábrica"], "cons": ["Maletero más pequeño que el del Ioniq 5 por el diseño coupé"], "tags": ["Eléctrico", "Premium"]}, {"id": "dacia-sandero", "brand": "Dacia", "model": "Sandero", "segment": "Compacto", "fuel": "Gasolina", "body": "car", "price": [12500, 17000], "power": [65, 100], "spec": ["consumo", 5.0, 5.6], "seats": 5, "tagline": "El coche nuevo más barato de Europa con espacio para 5", "reco": "Si tu único criterio es gastar lo mínimo posible en un coche nuevo (no de segunda mano) que aún te dé 5 plazas reales, este es probablemente el primero que deberías mirar.", "pros": ["El precio más bajo del mercado para un coche nuevo de 5 plazas", "Mecánicas sencillas y baratas de mantener"], "cons": ["Equipamiento e insonorización muy básicos"], "tags": ["Económico", "Ciudad"]}, {"id": "dacia-duster", "brand": "Dacia", "model": "Duster", "segment": "SUV", "fuel": "Híbrido", "body": "suv", "price": [18500, 27000], "power": [100, 150], "spec": ["consumo", 5.5, 6.0], "seats": 5, "tagline": "El SUV \"todocamino\" más barato del mercado, con opción 4x4", "reco": "Si necesitas un SUV de verdad (con opción de tracción a las 4 ruedas para pueblo, nieve o camino de tierra) pero sin gastarte una fortuna, es la opción más razonable del mercado.", "pros": ["Opción de tracción 4x4 a un precio muy competitivo", "Buena relación espacio/precio"], "cons": ["Insonorización y materiales interiores justos, acorde al precio"], "tags": ["Económico", "Familiar"]}, {"id": "dacia-jogger", "brand": "Dacia", "model": "Jogger", "segment": "Familiar", "fuel": "Gasolina", "body": "suv", "price": [17000, 22000], "power": [100, 110], "spec": ["consumo", 5.5, 6.0], "seats": 7, "tagline": "El coche de 7 plazas más barato de Europa", "reco": "Si necesitas 7 plazas (familia numerosa, llevar amigos de los peques, etc.) pero un SUV grande de 7 plazas se sale de presupuesto, este es la opción más económica con diferencia.", "pros": ["7 plazas al precio de un compacto normal", "Maletero muy grande incluso con las 7 plazas montadas"], "cons": ["Acabados sencillos, sin pretensión de lujo"], "tags": ["Económico", "Familiar", "7 plazas"]}, {"id": "dacia-spring", "brand": "Dacia", "model": "Spring", "segment": "Urbano", "fuel": "Eléctrico", "body": "car", "price": [17000, 20500], "power": [65, 85], "spec": ["autonomia", 225, 305], "seats": 4, "tagline": "El coche eléctrico más barato de Europa", "reco": "Si quieres probar el eléctrico para moverte solo por ciudad y trayectos cortos, sin gastar lo que cuesta un eléctrico normal, es la puerta de entrada más barata que existe ahora mismo.", "pros": ["El eléctrico nuevo más barato del mercado", "Coste de mantenimiento y de \"combustible\" mínimo"], "cons": ["Autonomía limitada, poco apto para carretera/autovía larga"], "tags": ["Económico", "Eléctrico", "Ciudad"]}, {"id": "skoda-fabia", "brand": "Škoda", "model": "Fabia", "segment": "Compacto", "fuel": "Gasolina", "body": "car", "price": [19000, 25500], "power": [95, 150], "spec": ["consumo", 5.2, 5.8], "seats": 5, "tagline": "Utilitario checo del grupo VW, de los más espaciosos de su clase", "reco": "Si quieres calidad de construcción tipo VW pero con un punto más de espacio interior y maletero por un precio algo más comedido, esta es una de las opciones más sensatas del segmento.", "pros": ["Maletero de los más grandes de su categoría", "Buena calidad de construcción heredada del grupo VW"], "cons": ["Diseño exterior algo conservador frente a sus rivales"], "tags": ["Económico", "Familiar"]}, {"id": "skoda-kamiq", "brand": "Škoda", "model": "Kamiq", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [24000, 31500], "power": [95, 150], "spec": ["consumo", 5.5, 6.0], "seats": 5, "tagline": "SUV pequeño con muchos detalles \"Simply Clever\" prácticos", "reco": "Los detalles prácticos de Škoda (paraguas escondido en la puerta, rascador de hielo en el tapón de combustible, etc.) son pequeños pero se notan en el uso diario.", "pros": ["Detalles prácticos \"Simply Clever\" muy útiles", "Buen espacio interior para su tamaño"], "cons": ["Imagen de marca menos reconocida que VW/SEAT por algunos compradores"], "tags": ["Familiar"]}, {"id": "skoda-octavia", "brand": "Škoda", "model": "Octavia", "segment": "Compacto", "fuel": "Híbrido enchufable", "body": "car", "price": [28500, 42000], "power": [110, 265], "spec": ["consumo", 1.0, 6.5], "seats": 5, "tagline": "El compacto con el maletero más grande de su categoría, también en familiar", "reco": "Si lo que más te importa es el espacio (maletero enorme, sobre todo en la versión Combi/familiar) por encima de la imagen de marca, pocos compactos a este precio te dan tanto.", "pros": ["Maletero gigante para un compacto, especialmente en la versión Combi", "Excelente relación equipamiento/precio frente a VW/Audi"], "cons": ["Menor prestigio de marca percibido frente a Volkswagen/Audi"], "tags": ["Familiar", "Económico"]}, {"id": "skoda-karoq", "brand": "Škoda", "model": "Karoq", "segment": "SUV grande", "fuel": "Gasolina", "body": "suv", "price": [30000, 40000], "power": [116, 190], "spec": ["consumo", 6.0, 6.8], "seats": 5, "tagline": "SUV familiar de tamaño medio, muy práctico por dentro", "reco": "Buena opción intermedia si el Kamiq se queda pequeño pero el Kodiaq se te va de presupuesto; mantiene esos detalles prácticos típicos de la marca.", "pros": ["Maletero muy bien aprovechado", "Buena relación calidad/precio frente a otros SUV del grupo VW"], "cons": ["No ofrece versión enchufable ni eléctrica propia"], "tags": ["Familiar"]}, {"id": "skoda-kodiaq", "brand": "Škoda", "model": "Kodiaq", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [38000, 52000], "power": [150, 272], "spec": ["consumo", 1.3, 7.0], "seats": 7, "tagline": "El SUV de 7 plazas más espacioso de Škoda", "reco": "Si necesitas 7 plazas y maletero grande a la vez (algo difícil de combinar), este es de los SUV de 7 plazas mejor resueltos en espacio por su precio.", "pros": ["7 plazas con maletero todavía razonable", "Versión enchufable con autonomía eléctrica útil"], "cons": ["Tamaño grande, requiere plaza de garaje amplia"], "tags": ["Familiar", "7 plazas"]}, {"id": "skoda-enyaq", "brand": "Škoda", "model": "Enyaq", "segment": "SUV grande", "fuel": "Eléctrico", "body": "suv", "price": [42000, 55000], "power": [170, 340], "spec": ["autonomia", 440, 570], "seats": 5, "tagline": "SUV eléctrico familiar, el más espacioso del grupo VW en eléctrico", "reco": "Si quieres el espacio interior de un Tiguan/Kodiaq pero en eléctrico, el Enyaq es probablemente la opción con más maletero del grupo VW para esa combinación.", "pros": ["Maletero de los más grandes entre los SUV eléctricos del grupo VW", "Buena autonomía real"], "cons": ["Precio elevado en las versiones de mayor autonomía/RS"], "tags": ["Eléctrico", "Familiar"]}, {"id": "bmw-serie1", "brand": "BMW", "model": "Serie 1", "segment": "Compacto", "fuel": "Gasolina", "body": "car", "price": [33000, 46000], "power": [116, 300], "spec": ["consumo", 5.5, 7.0], "seats": 5, "tagline": "El compacto \"de entrada\" a la marca BMW", "reco": "Si quieres la imagen y las sensaciones de conducción de BMW pero en el modelo más asequible de la marca, es de los compactos premium más divertidos al volante.", "pros": ["Conducción muy ágil y precisa, sello de la marca", "Imagen de marca premium a precio relativamente accesible"], "cons": ["Mantenimiento y seguro más caros que un compacto generalista"], "tags": ["Premium", "Deportivo"]}, {"id": "bmw-serie3", "brand": "BMW", "model": "Serie 3", "segment": "Berlina", "fuel": "Híbrido enchufable", "body": "car", "price": [46000, 65000], "power": [150, 374], "spec": ["consumo", 1.5, 7.0], "seats": 5, "tagline": "La berlina de referencia para quienes valoran la conducción por encima de todo", "reco": "Si haces muchos kilómetros de carretera/autovía y la sensación al volante te importa de verdad, sigue siendo una referencia en su categoría; existe también en familiar (Touring) muy práctico.", "pros": ["Conducción de referencia en su segmento, muy equilibrado", "Versión familiar (Touring) con maletero amplio"], "cons": ["Coste de mantenimiento y seguro elevados"], "tags": ["Premium", "Deportivo"]}, {"id": "bmw-x1", "brand": "BMW", "model": "X1", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [40000, 56000], "power": [136, 313], "spec": ["autonomia", 420, 440], "seats": 5, "tagline": "SUV compacto premium, también 100% eléctrico (iX1)", "reco": "Si quieres tu primer SUV premium y te planteas el eléctrico, el iX1 te permite tener la imagen BMW sin renunciar a la praxis de un SUV familiar pequeño.", "pros": ["Buena calidad de materiales y conducción típica BMW", "Versión eléctrica (iX1) con buenas prestaciones"], "cons": ["Maletero algo reducido en la versión eléctrica por la batería"], "tags": ["Premium", "Eléctrico"]}, {"id": "bmw-x3", "brand": "BMW", "model": "X3", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [52000, 70000], "power": [150, 380], "spec": ["consumo", 1.5, 7.5], "seats": 5, "tagline": "SUV premium de tamaño medio, muy equilibrado", "reco": "Es de los SUV premium más recomendables si quieres un equilibrio entre lujo, espacio y placer de conducción, sin llegar al tamaño (ni precio) de un X5.", "pros": ["Gran equilibrio entre lujo, espacio y conducción", "Versión M50 para quien quiera prestaciones muy altas"], "cons": ["Precio final puede subir mucho con opcionales"], "tags": ["Premium", "Familiar"]}, {"id": "bmw-i4", "brand": "BMW", "model": "i4", "segment": "Berlina", "fuel": "Eléctrico", "body": "car", "price": [52000, 70000], "power": [286, 544], "spec": ["autonomia", 480, 590], "seats": 5, "tagline": "Berlina-coupé 100% eléctrica con ADN deportivo BMW", "reco": "Si quieres una berlina eléctrica con vocación deportiva real (la versión M50 acelera como un deportivo serio) y no necesitas el espacio de un SUV, es de las más completas en su categoría.", "pros": ["Prestaciones muy altas, especialmente en versión M50", "Buena autonomía para uso de carretera habitual"], "cons": ["Maletero limitado por el diseño tipo coupé"], "tags": ["Premium", "Eléctrico", "Deportivo"]}, {"id": "mercedes-clasea", "brand": "Mercedes-Benz", "model": "Clase A", "segment": "Compacto", "fuel": "Gasolina", "body": "car", "price": [36000, 50000], "power": [136, 421], "spec": ["consumo", 5.8, 8.0], "seats": 5, "tagline": "El compacto de entrada a la marca Mercedes", "reco": "Si la imagen de marca y un interior con mucha pantalla y diseño te importan más que el espacio puro, es de los compactos premium con el interior más espectacular de su precio.", "pros": ["Interior con pantallas y diseño muy llamativo", "Imagen de marca premium reconocida"], "cons": ["Espacio trasero algo ajustado para el segmento premium"], "tags": ["Premium"]}, {"id": "mercedes-gla", "brand": "Mercedes-Benz", "model": "GLA", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [42000, 56000], "power": [136, 421], "spec": ["consumo", 6.0, 8.5], "seats": 5, "tagline": "SUV pequeño de Mercedes, el GLA es el Clase A elevado", "reco": "Buena puerta de entrada a un SUV premium si ya te convence el interior del Clase A pero prefieres la posición de conducción más alta de un SUV.", "pros": ["Mismo interior llamativo del Clase A en formato SUV", "Buena posición de conducción elevada"], "cons": ["Maletero no destaca especialmente en su categoría"], "tags": ["Premium"]}, {"id": "mercedes-clasec", "brand": "Mercedes-Benz", "model": "Clase C", "segment": "Berlina", "fuel": "Híbrido enchufable", "body": "car", "price": [50000, 70000], "power": [170, 381], "spec": ["consumo", 1.0, 7.0], "seats": 5, "tagline": "La berlina premium de tamaño medio por excelencia", "reco": "Si quieres una berlina premium elegante para hacer carretera con mucha comodidad y un interior de los más lujosos de su categoría, es de las opciones de referencia.", "pros": ["Confort e insonorización de los mejores del segmento", "Versión enchufable con buena autonomía eléctrica"], "cons": ["Precio sube mucho con opcionales de personalización"], "tags": ["Premium"]}, {"id": "mercedes-glc", "brand": "Mercedes-Benz", "model": "GLC", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [58000, 78000], "power": [197, 381], "spec": ["consumo", 1.0, 7.5], "seats": 5, "tagline": "SUV premium de tamaño medio, el más vendido de Mercedes", "reco": "Es de los SUV premium más completos si buscas espacio, confort y prestigio de marca a la vez, con la versión enchufable como opción para reducir mucho el consumo en el día a día.", "pros": ["Equilibrio muy alto entre lujo, espacio y confort", "Versión PHEV con autonomía eléctrica generosa"], "cons": ["Mantenimiento y seguro de los más caros de su categoría"], "tags": ["Premium", "Familiar"]}, {"id": "mercedes-eqa", "brand": "Mercedes-Benz", "model": "EQA", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [48000, 58000], "power": [140, 292], "spec": ["autonomia", 480, 560], "seats": 5, "tagline": "El SUV eléctrico de entrada a la gama Mercedes", "reco": "Si quieres tu primer eléctrico premium con la imagen y el confort típico Mercedes, sin llegar al tamaño (ni precio) del EQC/EQE, esta es la puerta de entrada de la marca.", "pros": ["Confort e insonorización típicos de Mercedes", "Buena autonomía para uso mixto ciudad/carretera"], "cons": ["Maletero algo por debajo de rivales eléctricos de su precio"], "tags": ["Premium", "Eléctrico"]}, {"id": "audi-a3", "brand": "Audi", "model": "A3", "segment": "Compacto", "fuel": "Gasolina", "body": "car", "price": [33000, 46000], "power": [110, 310], "spec": ["consumo", 5.5, 7.5], "seats": 5, "tagline": "El compacto premium con el interior más \"tecnológico\" del grupo VW", "reco": "Si te importa mucho la sensación de calidad y tecnología del interior (pantallas, materiales) por encima de todo, es de los compactos premium con mejor acabado interior de su precio.", "pros": ["Interior de gran calidad percibida y tecnología", "Buena conducción, equilibrada entre confort y deportividad"], "cons": ["Espacio trasero similar al de un compacto generalista, no destaca"], "tags": ["Premium"]}, {"id": "audi-q2", "brand": "Audi", "model": "Q2", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [36000, 46000], "power": [110, 190], "spec": ["consumo", 5.8, 6.5], "seats": 5, "tagline": "El SUV premium más pequeño y asequible de Audi", "reco": "Buena puerta de entrada a un SUV Audi si el presupuesto es ajustado dentro del segmento premium; mantiene la imagen de marca en tamaño compacto.", "pros": ["Tamaño compacto, fácil de aparcar en ciudad", "Buena calidad de interior típica Audi"], "cons": ["Maletero algo pequeño para un SUV"], "tags": ["Premium"]}, {"id": "audi-q3", "brand": "Audi", "model": "Q3", "segment": "SUV grande", "fuel": "Gasolina", "body": "suv", "price": [42000, 56000], "power": [150, 300], "spec": ["consumo", 6.0, 7.5], "seats": 5, "tagline": "SUV premium de tamaño medio, el más vendido de Audi", "reco": "Si buscas un SUV premium de tamaño medio con buen equilibrio entre deportividad y confort familiar, es de los más completos de la marca.", "pros": ["Buen equilibrio entre deportividad y espacio familiar", "Calidad de interior muy alta"], "cons": ["Precio final sube bastante con opcionales y paquetes"], "tags": ["Premium", "Familiar"]}, {"id": "audi-a5", "brand": "Audi", "model": "A5", "segment": "Berlina", "fuel": "Híbrido enchufable", "body": "car", "price": [48000, 65000], "power": [150, 367], "spec": ["consumo", 1.2, 7.0], "seats": 5, "tagline": "Berlina/familiar premium, sustituta del histórico A4", "reco": "Si buscas una berlina premium elegante para carretera y oficina, con la última tecnología del grupo, esta es la generación más reciente de lo que antes era el A4.", "pros": ["Interior y tecnología de última generación", "Versión Avant (familiar) con maletero amplio"], "cons": ["Precio elevado en versiones de mayor potencia"], "tags": ["Premium"]}, {"id": "audi-q4etron", "brand": "Audi", "model": "Q4 e-tron", "segment": "SUV grande", "fuel": "Eléctrico", "body": "suv", "price": [48000, 62000], "power": [170, 340], "spec": ["autonomia", 480, 570], "seats": 5, "tagline": "SUV premium 100% eléctrico, hermano del Škoda Enyaq", "reco": "Si quieres el espacio y la tecnología de un SUV familiar eléctrico con la imagen Audi, comparte mucho con el Enyaq pero con un interior más cuidado y un precio algo mayor por ello.", "pros": ["Buena autonomía real y carga rápida", "Interior con materiales y tecnología de nivel premium"], "cons": ["Precio notablemente mayor que su hermano técnico Škoda Enyaq"], "tags": ["Premium", "Eléctrico", "Familiar"]}, {"id": "volvo-ex30", "brand": "Volvo", "model": "EX30", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [36000, 46000], "power": [200, 428], "spec": ["autonomia", 340, 480], "seats": 5, "tagline": "El SUV eléctrico más pequeño y asequible de Volvo", "reco": "Si quieres entrar en el mundo Volvo (seguridad, diseño escandinavo) en eléctrico sin gastar lo que cuesta un XC40 o XC60, este es el modelo pensado exactamente para eso.", "pros": ["Precio de entrada más accesible para ser un Volvo", "Diseño interior minimalista y muy cuidado"], "cons": ["Maletero algo pequeño para el segmento SUV"], "tags": ["Eléctrico", "Premium"]}, {"id": "volvo-xc40", "brand": "Volvo", "model": "XC40", "segment": "SUV", "fuel": "Híbrido enchufable", "body": "suv", "price": [38000, 50000], "power": [129, 238], "spec": ["consumo", 1.8, 7.0], "seats": 5, "tagline": "SUV premium compacto, de los más seguros de su categoría", "reco": "Si la seguridad es tu prioridad número uno (Volvo lleva décadas siendo referencia en ese punto) en un SUV de tamaño compacto, es de las opciones más recomendables.", "pros": ["Seguridad de las más valoradas del mercado", "Buen espacio interior para su categoría"], "cons": ["Maletero algo por debajo de rivales directos"], "tags": ["Premium", "Fiable"]}, {"id": "volvo-c40", "brand": "Volvo", "model": "C40", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [46000, 55000], "power": [231, 405], "spec": ["autonomia", 440, 530], "seats": 5, "tagline": "Versión coupé 100% eléctrica del XC40", "reco": "Si te gusta el XC40 pero prefieres una silueta más deportiva tipo coupé y vas a dar el salto al eléctrico, es la misma base con otra estética.", "pros": ["Diseño exterior más deportivo que el XC40", "Buenas prestaciones de aceleración"], "cons": ["Maletero algo reducido por el techo inclinado"], "tags": ["Eléctrico", "Premium", "Deportivo"]}, {"id": "volvo-xc60", "brand": "Volvo", "model": "XC60", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [52000, 70000], "power": [197, 455], "spec": ["consumo", 1.5, 7.5], "seats": 5, "tagline": "El SUV premium mediano más vendido de Volvo", "reco": "Si necesitas un SUV grande familiar y la seguridad/comodidad para viajar largo te importa más que la deportividad pura, es de los más recomendables de su categoría.", "pros": ["Comodidad y seguridad de referencia en el segmento", "Versión Recharge (PHEV) con buena autonomía eléctrica"], "cons": ["Maletero no es el más grande de su categoría de precio"], "tags": ["Premium", "Familiar"]}, {"id": "volvo-xc90", "brand": "Volvo", "model": "XC90", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [70000, 95000], "power": [250, 455], "spec": ["consumo", 1.8, 8.0], "seats": 7, "tagline": "El SUV grande de 7 plazas más premium de Volvo", "reco": "Si necesitas 7 plazas reales para adultos (no solo niños) en un SUV premium grande, con un nivel de seguridad y confort de los más altos del mercado, es de las referencias del segmento.", "pros": ["7 plazas realmente utilizables por adultos", "Seguridad y confort de los más altos del mercado"], "cons": ["Precio y tamaño elevados, no apto para todos los garajes"], "tags": ["Premium", "Familiar", "7 plazas"]}, {"id": "tesla-model3", "brand": "Tesla", "model": "Model 3", "segment": "Berlina", "fuel": "Eléctrico", "body": "car", "price": [40000, 52000], "power": [283, 510], "spec": ["autonomia", 510, 700], "seats": 5, "tagline": "La berlina eléctrica más vendida del mundo", "reco": "Si la autonomía y la red de carga rápida (Supercharger) son tu prioridad para hacer viajes largos sin complicaciones, sigue siendo de las opciones más fiables en ese aspecto, aunque el interior es muy minimalista (casi todo se controla por la pantalla central).", "pros": ["Gran autonomía y acceso a la red Supercharger", "Software y actualizaciones de las más avanzadas del mercado"], "cons": ["Interior extremadamente minimalista, casi todo por pantalla central (sin cuadro frente al volante)"], "tags": ["Eléctrico", "Premium"]}, {"id": "tesla-modely", "brand": "Tesla", "model": "Model Y", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [45000, 58000], "power": [283, 534], "spec": ["autonomia", 480, 622], "seats": 5, "tagline": "El SUV eléctrico más vendido del mundo", "reco": "Si necesitas el espacio de un SUV familiar en eléctrico con buena autonomía y acceso a la red de carga más extendida del sector, es de las opciones más prácticas y probadas del mercado.", "pros": ["Maletero grande, incluido uno delantero (\"frunk\")", "Amplia red de carga rápida propia"], "cons": ["Interior minimalista, requiere acostumbrarse a controlar casi todo por pantalla"], "tags": ["Eléctrico", "Familiar"]}, {"id": "tesla-models", "brand": "Tesla", "model": "Model S", "segment": "Berlina", "fuel": "Eléctrico", "body": "car", "price": [90000, 110000], "power": [670, 1020], "spec": ["autonomia", 650, 750], "seats": 5, "tagline": "La berlina eléctrica de altas prestaciones de Tesla", "reco": "Solo tiene sentido si tu presupuesto es alto y quieres prestaciones extremas (la versión Plaid acelera como un hiperdeportivo) además de mucha autonomía; para el uso diario normal, un Model 3 cubre de sobra las mismas necesidades por mucho menos dinero.", "pros": ["Prestaciones extremas en la versión Plaid", "Autonomía de las más altas del mercado eléctrico"], "cons": ["Precio muy elevado frente a la utilidad real para el día a día"], "tags": ["Eléctrico", "Premium", "Deportivo"]}, {"id": "tesla-modelx", "brand": "Tesla", "model": "Model X", "segment": "SUV grande", "fuel": "Eléctrico", "body": "suv", "price": [100000, 120000], "power": [670, 1020], "spec": ["autonomia", 550, 650], "seats": 7, "tagline": "SUV eléctrico de gran tamaño con puertas tipo \"ala de gaviota\"", "reco": "Es la opción de Tesla si necesitas 7 plazas y máximas prestaciones a la vez, aunque para la mayoría de familias un Model Y (mucho más barato) resuelve el día a día igual de bien.", "pros": ["7 plazas con prestaciones de deportivo", "Puertas traseras de apertura vertical, fácil acceso en plazas estrechas"], "cons": ["Precio muy elevado y mantenimiento de componentes específico (puertas, etc.)"], "tags": ["Eléctrico", "Premium", "7 plazas"]}, {"id": "nissan-micra", "brand": "Nissan", "model": "Micra", "segment": "Urbano", "fuel": "Eléctrico", "body": "car", "price": [25000, 33000], "power": [122, 150], "spec": ["autonomia", 310, 410], "seats": 5, "tagline": "Utilitario que ha pasado a ser 100% eléctrico, hermano técnico del Renault 5", "reco": "Si te gusta el Renault 5 pero prefieres un diseño más discreto y la garantía de batería de Nissan (8 años), es prácticamente el mismo coche por dentro con otra cara.", "pros": ["Garantía de batería de 8 años", "Comparte plataforma ya probada con el Renault 5"], "cons": ["Plazas traseras algo justas de espacio para las piernas"], "tags": ["Eléctrico", "Ciudad"]}, {"id": "nissan-juke", "brand": "Nissan", "model": "Juke", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [22000, 30000], "power": [114, 143], "spec": ["consumo", 5.0, 5.8], "seats": 5, "tagline": "SUV pequeño de diseño muy personal, de los pioneros del segmento", "reco": "Si quieres un SUV pequeño que no se parezca a los demás por fuera, el diseño exterior del Juke sigue siendo de los más diferenciados de su categoría.", "pros": ["Diseño exterior muy reconocible", "Buena dotación tecnológica de serie"], "cons": ["Visibilidad trasera reducida por el diseño de las ventanillas"], "tags": ["Ciudad"]}, {"id": "nissan-qashqai", "brand": "Nissan", "model": "Qashqai", "segment": "SUV grande", "fuel": "Híbrido", "body": "suv", "price": [30000, 42000], "power": [140, 190], "spec": ["consumo", 5.0, 5.8], "seats": 5, "tagline": "El SUV familiar más vendido de Nissan en Europa", "reco": "Es de las opciones más probadas del segmento: lleva más de una década siendo de los SUV familiares más vendidos, así que encontrarás piezas, talleres y opiniones de sobra antes de decidirte.", "pros": ["Uno de los SUV más vendidos de Europa, fácil de revender", "Tecnología híbrida e-Power sin necesidad de enchufarlo"], "cons": ["Maletero algo ajustado frente a algunos rivales directos"], "tags": ["Familiar", "Fiable"]}, {"id": "nissan-xtrail", "brand": "Nissan", "model": "X-Trail", "segment": "SUV grande", "fuel": "Híbrido", "body": "suv", "price": [36000, 48000], "power": [158, 213], "spec": ["consumo", 5.3, 6.0], "seats": 7, "tagline": "El SUV grande de Nissan, con opción de 7 plazas", "reco": "Si el Qashqai se queda pequeño y necesitáis la opción de 7 plazas (las dos últimas mejor para trayectos cortos), el X-Trail mantiene la misma filosofía híbrida en un tamaño mayor.", "pros": ["Opción de 7 plazas", "Tecnología e-Power, sin necesidad de cargarlo en un enchufe"], "cons": ["Las dos últimas plazas son estrechas para adultos"], "tags": ["Familiar", "7 plazas"]}, {"id": "nissan-ariya", "brand": "Nissan", "model": "Ariya", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [46000, 58000], "power": [218, 394], "spec": ["autonomia", 400, 530], "seats": 5, "tagline": "El SUV eléctrico grande de Nissan", "reco": "Buena opción si quieres un eléctrico familiar de marca generalista pero con un punto más de diseño y confort que la media de su categoría.", "pros": ["Interior muy silencioso y confortable", "Buen espacio interior y maletero"], "cons": ["Precio elevado frente a otros eléctricos generalistas similares"], "tags": ["Eléctrico", "Familiar"]}, {"id": "honda-civic", "brand": "Honda", "model": "Civic", "segment": "Compacto", "fuel": "Híbrido", "body": "car", "price": [31000, 38000], "power": [143, 143], "spec": ["consumo", 4.2, 4.6], "seats": 5, "tagline": "Compacto híbrido con fama de motor muy refinado y buena conducción", "reco": "Si quieres un híbrido que no se note demasiado que lo es (responde como un coche de gasolina normal) y te gusta conducir, el Civic es de los más logrados en ese equilibrio.", "pros": ["Conducción muy refinada, de las mejores del segmento", "Buena fiabilidad histórica de la marca"], "cons": ["Pocas versiones de motor a elegir, todo es el mismo híbrido"], "tags": ["Fiable", "Deportivo"]}, {"id": "honda-hrv", "brand": "Honda", "model": "HR-V", "segment": "SUV", "fuel": "Híbrido", "body": "suv", "price": [31000, 37000], "power": [131, 131], "spec": ["consumo", 4.8, 5.2], "seats": 5, "tagline": "SUV compacto híbrido, el Civic en formato SUV", "reco": "Comparte la mecánica híbrida del Civic en un cuerpo más práctico; buena opción si quieres ese tipo de conducción suave pero con más maletero y altura.", "pros": ["Mecánica híbrida suave y de bajo consumo", "Buena habitabilidad trasera"], "cons": ["Diseño exterior menos llamativo que sus rivales"], "tags": ["Familiar"]}, {"id": "honda-crv", "brand": "Honda", "model": "CR-V", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [40000, 52000], "power": [184, 272], "spec": ["consumo", 1.0, 6.0], "seats": 5, "tagline": "El SUV grande de Honda, ahora también enchufable", "reco": "Si quieres un SUV grande con buena fiabilidad histórica y la opción enchufable te permite cargarlo a diario, es una alternativa menos vista que las marcas alemanas con prestaciones similares.", "pros": ["Buena fiabilidad histórica de la marca", "Versión enchufable con autonomía eléctrica útil"], "cons": ["Red de concesionarios Honda menos extensa que la de otras marcas"], "tags": ["Familiar"]}, {"id": "honda-eny1", "brand": "Honda", "model": "e:Ny1", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [42000, 48000], "power": [204, 204], "spec": ["autonomia", 370, 412], "seats": 5, "tagline": "El primer SUV 100% eléctrico de Honda en Europa", "reco": "Buena opción si confías en la fiabilidad de Honda y quieres tu primer eléctrico, aunque la autonomía no es de las más altas de su categoría de precio.", "pros": ["Buena calidad de materiales interiores", "Conducción suave típica de la marca"], "cons": ["Autonomía algo por debajo de rivales del mismo precio"], "tags": ["Eléctrico"]}, {"id": "mazda-mazda2", "brand": "Mazda", "model": "Mazda2 Hybrid", "segment": "Compacto", "fuel": "Híbrido", "body": "car", "price": [20000, 25000], "power": [116, 116], "spec": ["consumo", 3.8, 4.2], "seats": 5, "tagline": "Es mecánicamente un Toyota Yaris con la carrocería de Mazda", "reco": "Si te gusta la fiabilidad y el bajo consumo del Yaris pero prefieres el diseño interior y exterior de Mazda, es literalmente el mismo coche por debajo con otra piel.", "pros": ["Misma mecánica fiable y eficiente que el Toyota Yaris", "Interior con un punto más de diseño"], "cons": ["Precio algo más alto que el Yaris en el que se basa"], "tags": ["Fiable", "Ciudad"]}, {"id": "mazda-cx30", "brand": "Mazda", "model": "CX-30", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [27000, 34000], "power": [122, 186], "spec": ["consumo", 5.8, 6.5], "seats": 5, "tagline": "SUV compacto con uno de los interiores mejor acabados de su categoría", "reco": "Si te importa mucho la sensación de calidad por dentro (materiales, tacto de los mandos) más que la última tecnología de pantallas, Mazda destaca especialmente en eso para su precio.", "pros": ["Calidad de materiales interiores por encima de su precio", "Buena conducción, ágil para ser un SUV"], "cons": ["Maletero algo pequeño para la categoría"], "tags": ["Premium"]}, {"id": "mazda-cx5", "brand": "Mazda", "model": "CX-5", "segment": "SUV grande", "fuel": "Gasolina", "body": "suv", "price": [32000, 42000], "power": [165, 194], "spec": ["consumo", 6.5, 7.5], "seats": 5, "tagline": "El SUV familiar de Mazda, sin versión híbrida ni eléctrica", "reco": "Buena opción si prefieres motores de gasolina convencionales bien resueltos (sin hibridación) y un interior de calidad por encima de la tecnología más puntera.", "pros": ["Conducción muy equilibrada para un SUV", "Interior de calidad superior a la media del precio"], "cons": ["No ofrece versión híbrida ni electrificada, consume algo más que sus rivales"], "tags": ["Familiar"]}, {"id": "mazda-mx30", "brand": "Mazda", "model": "MX-30", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [34000, 40000], "power": [145, 145], "spec": ["autonomia", 200, 200], "seats": 5, "tagline": "El eléctrico de Mazda, pensado sobre todo para uso urbano", "reco": "Solo tiene sentido si tu uso es casi exclusivamente urbano: la autonomía es de las más bajas de su categoría, así que para carretera larga hay opciones mejores por precio similar.", "pros": ["Diseño interior con materiales reciclados muy cuidado", "Puertas traseras de apertura en libro, originales"], "cons": ["Autonomía muy limitada para el precio, poco apta para carretera"], "tags": ["Eléctrico", "Ciudad"]}, {"id": "mazda-mx5", "brand": "Mazda", "model": "MX-5", "segment": "Berlina", "fuel": "Gasolina", "body": "car", "price": [30000, 38000], "power": [132, 184], "spec": ["consumo", 6.5, 7.0], "seats": 2, "tagline": "El descapotable deportivo más vendido de la historia", "reco": "Si lo que buscas es diversión al volante por encima de espacio o practicidad, sigue siendo de las formas más asequibles de tener un descapotable deportivo ligero y ágil.", "pros": ["Ligero y muy divertido de conducir", "Precio de entrada a un descapotable deportivo real"], "cons": ["Solo 2 plazas y maletero mínimo, nada práctico para el día a día"], "tags": ["Deportivo"]}, {"id": "subaru-crosstrek", "brand": "Subaru", "model": "Crosstrek", "segment": "SUV", "fuel": "Híbrido", "body": "suv", "price": [33000, 39000], "power": [136, 136], "spec": ["consumo", 5.8, 6.2], "seats": 5, "tagline": "SUV compacto con tracción total de serie, marca de la casa", "reco": "Si vives en una zona con nieve, montaña o caminos sin asfaltar habituales, la tracción total de serie (no opcional) es la gran diferencia de Subaru frente a casi toda la competencia a este precio.", "pros": ["Tracción total de serie en toda la gama, no es un extra de pago", "Buena fiabilidad histórica de la marca"], "cons": ["Red de concesionarios y talleres mucho más reducida que la media"], "tags": ["Familiar"]}, {"id": "subaru-forester", "brand": "Subaru", "model": "Forester", "segment": "SUV grande", "fuel": "Híbrido", "body": "suv", "price": [38000, 45000], "power": [150, 150], "spec": ["consumo", 6.3, 6.8], "seats": 5, "tagline": "SUV familiar también con tracción total de serie", "reco": "Mismo argumento que el Crosstrek pero en tamaño familiar: si la tracción a las 4 ruedas todo el año es importante para ti, hay pocas alternativas que la incluyan de serie a este precio.", "pros": ["Tracción total de serie", "Buena altura libre al suelo para caminos difíciles"], "cons": ["Tecnología de infoentretenimiento por detrás de la competencia"], "tags": ["Familiar"]}, {"id": "subaru-solterra", "brand": "Subaru", "model": "Solterra", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [45000, 52000], "power": [218, 218], "spec": ["autonomia", 380, 460], "seats": 5, "tagline": "El eléctrico de Subaru, hermano técnico del Toyota bZ4X", "reco": "Compraría este o el Toyota bZ4X casi por igual: comparten casi toda la mecánica, así que la decisión real está en si prefieres la tracción total de serie de Subaru o la red comercial más amplia de Toyota.", "pros": ["Tracción total de serie en toda la gama eléctrica", "Comparte fiabilidad mecánica con Toyota"], "cons": ["Carga algo más lenta que otros eléctricos de su precio"], "tags": ["Eléctrico", "Familiar"]}, {"id": "mitsubishi-asx", "brand": "Mitsubishi", "model": "ASX", "segment": "SUV", "fuel": "Híbrido", "body": "suv", "price": [24000, 30000], "power": [145, 145], "spec": ["consumo", 4.5, 5.0], "seats": 5, "tagline": "Es mecánicamente un Renault Captur con la carrocería de Mitsubishi", "reco": "Si te gusta el Captur pero prefieres otro diseño exterior, es prácticamente el mismo coche por dentro, fruto de la alianza entre ambas marcas.", "pros": ["Mecánica híbrida ya muy probada (es la del Captur)", "Buen equipamiento de serie"], "cons": ["Menos opciones de personalización que el Captur en el que se basa"], "tags": ["Familiar"]}, {"id": "mitsubishi-eclipsecross", "brand": "Mitsubishi", "model": "Eclipse Cross", "segment": "SUV", "fuel": "Híbrido enchufable", "body": "suv", "price": [33000, 40000], "power": [101, 224], "spec": ["consumo", 1.5, 6.5], "seats": 5, "tagline": "SUV con versión enchufable de larga trayectoria en la marca", "reco": "Mitsubishi fue pionera en híbridos enchufables (con el Outlander PHEV), así que esta tecnología en el Eclipse Cross está especialmente rodada y probada con los años.", "pros": ["Tecnología PHEV con muchos años de experiencia detrás", "Buena habitabilidad para su tamaño"], "cons": ["Diseño interior algo desactualizado frente a rivales recientes"], "tags": ["Familiar"]}, {"id": "mitsubishi-outlanderphev", "brand": "Mitsubishi", "model": "Outlander PHEV", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [42000, 50000], "power": [184, 184], "spec": ["consumo", 1.0, 6.0], "seats": 7, "tagline": "El SUV grande enchufable más veterano del mercado, con 7 plazas", "reco": "Si quieres 7 plazas y la tranquilidad de una tecnología enchufable con más de una década de recorrido y fiabilidad demostrada, pocos PHEV tienen tanto rodaje como este.", "pros": ["Tecnología PHEV con más de 10 años de evolución", "Opción de 7 plazas"], "cons": ["Maletero se reduce notablemente usando las 7 plazas"], "tags": ["Familiar", "7 plazas"]}, {"id": "suzuki-swift", "brand": "Suzuki", "model": "Swift", "segment": "Compacto", "fuel": "Híbrido", "body": "car", "price": [17500, 21500], "power": [83, 101], "spec": ["consumo", 4.0, 4.5], "seats": 5, "tagline": "Utilitario ligero, ágil y barato de mantener", "reco": "Si valoras un coche pequeño y ligero de verdad (pesa bastante menos que sus rivales), notarás la diferencia tanto en consumo como en lo ágil que resulta en ciudad.", "pros": ["Muy ligero, ágil de conducir y barato de mantener", "Consumo bajo gracias a su peso reducido"], "cons": ["Insonorización y materiales interiores muy sencillos"], "tags": ["Económico", "Ciudad"]}, {"id": "suzuki-vitara", "brand": "Suzuki", "model": "Vitara", "segment": "SUV", "fuel": "Híbrido", "body": "suv", "price": [22000, 27000], "power": [102, 129], "spec": ["consumo", 5.0, 5.6], "seats": 5, "tagline": "SUV pequeño con opción de tracción total ALLGRIP", "reco": "Si necesitas tracción total ocasional (nieve, caminos) pero en un SUV pequeño y asequible, es de las pocas opciones de su tamaño que la ofrecen.", "pros": ["Opción de tracción total ALLGRIP poco habitual en este tamaño", "Precio competitivo en su categoría"], "cons": ["Maletero algo pequeño para un SUV"], "tags": ["Económico", "Familiar"]}, {"id": "suzuki-scross", "brand": "Suzuki", "model": "S-Cross", "segment": "SUV grande", "fuel": "Híbrido", "body": "suv", "price": [25000, 31000], "power": [129, 129], "spec": ["consumo", 5.3, 5.8], "seats": 5, "tagline": "El SUV mediano de Suzuki, también con ALLGRIP disponible", "reco": "Buena opción intermedia entre el Vitara y un SUV grande, manteniendo la opción de tracción total y un precio todavía contenido.", "pros": ["Opción de tracción total ALLGRIP", "Buen espacio interior para su precio"], "cons": ["Tecnología de asistencia a la conducción más básica que rivales"], "tags": ["Familiar"]}, {"id": "suzuki-across", "brand": "Suzuki", "model": "Across", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [48000, 54000], "power": [306, 306], "spec": ["consumo", 1.0, 1.5], "seats": 5, "tagline": "Es mecánicamente un Toyota RAV4 PHEV con la carrocería de Suzuki", "reco": "Si confías en la mecánica probada de Toyota (es la misma del RAV4 enchufable) pero quieres comprarlo en un concesionario Suzuki, es una opción a tener en cuenta, aunque el precio es alto para la marca.", "pros": ["Mecánica enchufable idéntica a la del fiable Toyota RAV4", "Mucha potencia y autonomía eléctrica combinada"], "cons": ["Precio elevado para lo que se espera de la marca Suzuki"], "tags": ["Familiar", "Premium"]}, {"id": "jeep-avenger", "brand": "Jeep", "model": "Avenger", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [35000, 42000], "power": [115, 156], "spec": ["autonomia", 300, 400], "seats": 5, "tagline": "El SUV pequeño de Jeep, ahora también eléctrico", "reco": "Si te gusta la imagen aventurera de Jeep pero tu uso real es sobre todo ciudad, la versión eléctrica es ágil y suficiente; para caminos de tierra de verdad, mejor mira la versión 4xe.", "pros": ["Buena imagen e identidad de marca aventurera", "Versión eléctrica ágil para ciudad"], "cons": ["La versión eléctrica no tiene tracción total, solo delantera"], "tags": ["Eléctrico"]}, {"id": "jeep-compass", "brand": "Jeep", "model": "Compass", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [36000, 46000], "power": [130, 240], "spec": ["consumo", 1.5, 7.0], "seats": 5, "tagline": "SUV familiar con opción de tracción total 4xe", "reco": "Si de verdad vas a usar caminos de tierra o nieve con cierta frecuencia, la versión 4xe combina tracción total real con la opción de moverte en eléctrico el resto del tiempo.", "pros": ["Versión 4xe con tracción total real, no solo de imagen", "Buena altura libre al suelo"], "cons": ["Consumo alto en las versiones sin hibridar"], "tags": ["Familiar"]}, {"id": "jeep-renegade", "brand": "Jeep", "model": "Renegade", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [28000, 35000], "power": [130, 130], "spec": ["consumo", 6.0, 6.8], "seats": 5, "tagline": "El SUV pequeño más \"clásico\" de Jeep, de líneas cuadradas", "reco": "Si te gusta la estética robusta y cuadrada típica de Jeep pero en tamaño compacto y sin pasarte de presupuesto, sigue siendo de los más reconocibles de su categoría.", "pros": ["Diseño exterior muy reconocible", "Buena altura libre al suelo para su tamaño"], "cons": ["Sin versión híbrida ni eléctrica disponible"], "tags": ["Económico"]}, {"id": "alfaromeo-junior", "brand": "Alfa Romeo", "model": "Junior", "segment": "SUV", "fuel": "Híbrido", "body": "suv", "price": [30000, 42000], "power": [136, 280], "spec": ["consumo", 5.5, 6.0], "seats": 5, "tagline": "El SUV pequeño de Alfa Romeo, con look muy deportivo", "reco": "Si quieres un SUV pequeño que se vea y conduzca como un coche deportivo italiano, es de los más logrados en ese aspecto, aunque la marca tiene menos red de talleres que las generalistas.", "pros": ["Diseño y conducción con carácter deportivo italiano", "Versión eléctrica e híbrida disponibles bajo la misma carrocería"], "cons": ["Red de concesionarios y talleres más reducida"], "tags": ["Deportivo", "Premium"]}, {"id": "alfaromeo-tonale", "brand": "Alfa Romeo", "model": "Tonale", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [38000, 48000], "power": [160, 280], "spec": ["consumo", 1.1, 6.5], "seats": 5, "tagline": "SUV mediano con diseño y sonido de escape muy trabajados", "reco": "Buena alternativa con personalidad a los SUV alemanes habituales si valoras el diseño y las sensaciones al volante por encima de la última tecnología de pantallas.", "pros": ["Diseño exterior e interior muy distintivo", "Buenas sensaciones de conducción, sello de la marca"], "cons": ["Maletero algo por debajo de la media del segmento"], "tags": ["Premium", "Deportivo"]}, {"id": "alfaromeo-giulia", "brand": "Alfa Romeo", "model": "Giulia", "segment": "Berlina", "fuel": "Gasolina", "body": "car", "price": [48000, 75000], "power": [200, 520], "spec": ["consumo", 7.0, 9.5], "seats": 5, "tagline": "Berlina deportiva, de las más divertidas de conducir de su categoría", "reco": "Si tu prioridad número uno es cómo se siente el coche al volante (y no tanto el espacio o la última tecnología), pocas berlinas premium ofrecen tanto carácter deportivo de fábrica.", "pros": ["De las berlinas más divertidas de conducir del mercado", "Diseño atemporal con mucho carácter"], "cons": ["Maletero y espacio trasero por detrás de sus rivales alemanes"], "tags": ["Deportivo", "Premium"]}, {"id": "alfaromeo-stelvio", "brand": "Alfa Romeo", "model": "Stelvio", "segment": "SUV grande", "fuel": "Gasolina", "body": "suv", "price": [55000, 80000], "power": [200, 520], "spec": ["consumo", 7.5, 10.0], "seats": 5, "tagline": "El SUV deportivo de Alfa Romeo, hermano del Giulia", "reco": "Es el Giulia en formato SUV: misma vocación deportiva, ahora con más altura y maletero, para quien no quiere renunciar a las sensaciones de conducción al pasarse a un SUV.", "pros": ["Conducción deportiva poco habitual en un SUV de este tamaño", "Diseño con mucha personalidad"], "cons": ["Consumo elevado en las versiones más potentes"], "tags": ["Deportivo", "Premium"]}, {"id": "mini-cooper", "brand": "MINI", "model": "Cooper", "segment": "Compacto", "fuel": "Eléctrico", "body": "car", "price": [30000, 40000], "power": [184, 218], "spec": ["autonomia", 305, 400], "seats": 4, "tagline": "El icónico urbano británico, ahora también 100% eléctrico", "reco": "Si quieres un coche pequeño con mucha personalidad y te mueves sobre todo por ciudad, la versión eléctrica mantiene ese carácter ágil tan típico de la marca sin gastar en combustible.", "pros": ["Conducción muy ágil y divertida en ciudad", "Diseño interior y exterior con mucha personalidad"], "cons": ["Plazas traseras y maletero reducidos, poco práctico para 4"], "tags": ["Eléctrico", "Deportivo"]}, {"id": "mini-countryman", "brand": "MINI", "model": "Countryman", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [38000, 50000], "power": [204, 313], "spec": ["autonomia", 400, 460], "seats": 5, "tagline": "El MINI más grande, en formato SUV familiar", "reco": "Si te gusta la personalidad de MINI pero necesitas algo más de espacio real para 5 y maletero, el Countryman es la opción de la marca que de verdad funciona para el día a día familiar.", "pros": ["Mantiene el carácter divertido de MINI con más espacio real", "Versión eléctrica con autonomía suficiente para el día a día"], "cons": ["Precio elevado frente a SUV generalistas de tamaño similar"], "tags": ["Premium", "Familiar"]}, {"id": "mini-aceman", "brand": "MINI", "model": "Aceman", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [36000, 44000], "power": [184, 218], "spec": ["autonomia", 310, 400], "seats": 5, "tagline": "SUV pequeño 100% eléctrico, a medio camino entre el Cooper y el Countryman", "reco": "Si el Cooper se queda pequeño pero el Countryman se te va de presupuesto, este cubre ese hueco intermedio manteniendo el carácter de la marca.", "pros": ["Buen equilibrio entre tamaño, autonomía y precio dentro de la marca", "Diseño interior muy cuidado"], "cons": ["Plazas traseras algo justas para adultos altos"], "tags": ["Eléctrico"]}, {"id": "smart-1", "brand": "smart", "model": "#1", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [38000, 46000], "power": [272, 428], "spec": ["autonomia", 310, 440], "seats": 5, "tagline": "El renacer de smart como SUV eléctrico, ya no es un microcoche", "reco": "Si conocías smart solo por sus microcoches de 2 plazas, olvídate de esa imagen: ahora es un SUV eléctrico normal, con mucha tecnología y desarrollado junto a Mercedes.", "pros": ["Buena tecnología y acabados, desarrollado con Mercedes", "Carga rápida competitiva"], "cons": ["Marca todavía con poco recorrido en este nuevo formato de SUV"], "tags": ["Eléctrico"]}, {"id": "smart-3", "brand": "smart", "model": "#3", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [42000, 52000], "power": [272, 428], "spec": ["autonomia", 330, 455], "seats": 5, "tagline": "Versión coupé del #1, más deportiva", "reco": "Mismo argumento que el #1 pero con una silueta más deportiva tipo coupé; la elección entre ambos es sobre todo estética.", "pros": ["Diseño más deportivo que el #1", "Buenas prestaciones de aceleración"], "cons": ["Maletero algo reducido por el techo inclinado"], "tags": ["Eléctrico", "Deportivo"]}, {"id": "porsche-macan", "brand": "Porsche", "model": "Macan", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [85000, 110000], "power": [360, 639], "spec": ["autonomia", 450, 590], "seats": 5, "tagline": "El SUV de entrada a Porsche, ahora ya solo en versión eléctrica", "reco": "Si el presupuesto no es un problema y quieres el SUV premium con mejores sensaciones de conducción del mercado, sigue siendo la referencia del segmento, ahora 100% eléctrico.", "pros": ["Conducción deportiva de referencia entre los SUV premium", "Carga muy rápida (arquitectura de 800V)"], "cons": ["Precio muy elevado, fuera del alcance de la mayoría de compradores"], "tags": ["Premium", "Deportivo", "Eléctrico"]}, {"id": "porsche-cayenne", "brand": "Porsche", "model": "Cayenne", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [95000, 140000], "power": [353, 739], "spec": ["consumo", 1.5, 11.0], "seats": 5, "tagline": "El SUV grande de altas prestaciones de Porsche", "reco": "Solo tiene sentido si buscas un SUV grande con prestaciones de deportivo de verdad y el presupuesto lo permite; para uso familiar normal, hay SUV grandes igual de prácticos por mucho menos dinero.", "pros": ["Prestaciones de deportivo en un SUV grande", "Muy bien equipado y personalizable"], "cons": ["Precio y mantenimiento muy elevados"], "tags": ["Premium", "Deportivo"]}, {"id": "porsche-911", "brand": "Porsche", "model": "911", "segment": "Berlina", "fuel": "Gasolina", "body": "car", "price": [120000, 250000], "power": [394, 650], "spec": ["consumo", 9.5, 13.0], "seats": 4, "tagline": "El deportivo de referencia mundial desde hace más de 60 años", "reco": "No es un coche para \"empezar\" en el mundo del motor, es la recompensa al final del camino: si llegas hasta aquí, ya sabes exactamente lo que quieres y por qué.", "pros": ["Referencia mundial en deportivos, muy alta revalorización", "Utilizable también en el día a día, no solo en circuito"], "cons": ["Precio y mantenimiento solo al alcance de unos pocos"], "tags": ["Premium", "Deportivo"]}, {"id": "porsche-taycan", "brand": "Porsche", "model": "Taycan", "segment": "Berlina", "fuel": "Eléctrico", "body": "car", "price": [100000, 180000], "power": [380, 1093], "spec": ["autonomia", 420, 650], "seats": 4, "tagline": "El deportivo eléctrico de Porsche, con prestaciones de 911", "reco": "Si quieres prestaciones extremas pero en formato eléctrico y con algo más de espacio que el 911, es de los eléctricos más completos a la hora de conducir del mercado.", "pros": ["Prestaciones y manejo de referencia entre los eléctricos", "Carga ultrarrápida (800V), de las más veloces del mercado"], "cons": ["Autonomía algo más ajustada que sus rivales eléctricos premium"], "tags": ["Premium", "Deportivo", "Eléctrico"]}, {"id": "porsche-panamera", "brand": "Porsche", "model": "Panamera", "segment": "Berlina", "fuel": "Híbrido enchufable", "body": "car", "price": [110000, 170000], "power": [330, 782], "spec": ["consumo", 1.8, 11.0], "seats": 4, "tagline": "La berlina grande de altas prestaciones de Porsche", "reco": "Si necesitas una berlina grande de verdad pero no quieres renunciar a sensaciones deportivas, combina ambas cosas mejor que casi cualquier rival; el precio está a la altura.", "pros": ["Combina espacio de berlina grande con sensaciones deportivas", "Versión enchufable con autonomía eléctrica útil"], "cons": ["Precio y mantenimiento muy elevados"], "tags": ["Premium", "Deportivo"]}, {"id": "lexus-lbx", "brand": "Lexus", "model": "LBX", "segment": "SUV", "fuel": "Híbrido", "body": "suv", "price": [33000, 40000], "power": [136, 136], "spec": ["consumo", 4.5, 5.0], "seats": 5, "tagline": "El SUV de entrada a Lexus, más pequeño y accesible", "reco": "Si quieres la fiabilidad y el lujo silencioso de Lexus pero el resto de la gama se te va de presupuesto, este es el modelo pensado exactamente para eso.", "pros": ["Fiabilidad de las más altas del mercado premium", "Acabados de calidad muy por encima de su precio"], "cons": ["Maletero algo pequeño para su categoría"], "tags": ["Premium", "Fiable"]}, {"id": "lexus-nx", "brand": "Lexus", "model": "NX", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [48000, 62000], "power": [242, 309], "spec": ["consumo", 1.0, 6.5], "seats": 5, "tagline": "SUV mediano premium, con versión enchufable", "reco": "Buena alternativa a los SUV alemanes habituales si priorizas la fiabilidad y el silencio de marcha por encima de la deportividad pura.", "pros": ["Fiabilidad y garantía de las mejores del segmento premium", "Conducción muy silenciosa y confortable"], "cons": ["Maletero algo por debajo de rivales alemanes equivalentes"], "tags": ["Premium", "Fiable"]}, {"id": "lexus-rx", "brand": "Lexus", "model": "RX", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [62000, 78000], "power": [265, 371], "spec": ["consumo", 1.0, 7.5], "seats": 5, "tagline": "El SUV grande de Lexus, lujo silencioso y muy fiable", "reco": "Si buscas un SUV grande premium y la fiabilidad a largo plazo te importa más que la imagen de marca deportiva, es de los más recomendables del segmento.", "pros": ["Fiabilidad histórica excepcional para el segmento", "Confort e insonorización de los mejores del mercado"], "cons": ["Imagen de marca menos deportiva que sus rivales alemanes"], "tags": ["Premium", "Fiable"]}, {"id": "lexus-es", "brand": "Lexus", "model": "ES", "segment": "Berlina", "fuel": "Híbrido", "body": "car", "price": [50000, 62000], "power": [218, 218], "spec": ["consumo", 5.0, 5.5], "seats": 5, "tagline": "Berlina premium híbrida, cómoda y muy silenciosa", "reco": "Si quieres una berlina premium para carretera larga con el mínimo de sustos posibles (mecánica híbrida muy probada, fiabilidad alta), es de las opciones más tranquilas del segmento.", "pros": ["Mecánica híbrida muy fiable y silenciosa", "Confort de marcha excelente en carretera"], "cons": ["Conducción menos deportiva que sus rivales alemanes"], "tags": ["Premium", "Fiable"]}, {"id": "landrover-defender", "brand": "Land Rover", "model": "Defender", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [65000, 110000], "power": [200, 635], "spec": ["consumo", 2.5, 10.0], "seats": 5, "tagline": "El todoterreno \"de verdad\" de la marca, capaz fuera de asfalto", "reco": "Solo tiene sentido pagar este precio si de verdad vas a usar su capacidad todoterreno (montaña, nieve, caminos difíciles); para uso 100% urbano, hay SUV mucho más baratos que cumplen igual.", "pros": ["Capacidad todoterreno real, no solo de imagen", "Diseño con mucha personalidad e identidad propia"], "cons": ["Precio y mantenimiento muy elevados para el uso que le da la mayoría"], "tags": ["Premium", "Familiar"]}, {"id": "landrover-discoverysport", "brand": "Land Rover", "model": "Discovery Sport", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [50000, 65000], "power": [200, 309], "spec": ["consumo", 1.6, 7.5], "seats": 5, "tagline": "SUV familiar premium con capacidad todoterreno real", "reco": "Buena opción si quieres la imagen y capacidad de Land Rover pero en un tamaño y precio algo más accesible que el Defender o el Range Rover.", "pros": ["Capacidad todoterreno superior a la media premium", "Opción de 7 plazas en algunas versiones"], "cons": ["Fiabilidad históricamente por debajo de la media del segmento premium"], "tags": ["Premium", "Familiar"]}, {"id": "landrover-evoque", "brand": "Land Rover", "model": "Range Rover Evoque", "segment": "SUV", "fuel": "Híbrido enchufable", "body": "suv", "price": [55000, 68000], "power": [160, 309], "spec": ["consumo", 1.5, 7.0], "seats": 5, "tagline": "El SUV compacto de la gama de lujo Range Rover", "reco": "Si quieres la imagen de lujo de Range Rover pero en el tamaño más pequeño y accesible de la gama, es la puerta de entrada a esa marca.", "pros": ["Imagen de marca de lujo muy reconocida", "Diseño exterior con mucho carácter"], "cons": ["Espacio interior no es el punto fuerte de su categoría"], "tags": ["Premium"]}, {"id": "landrover-rangeroversport", "brand": "Land Rover", "model": "Range Rover Sport", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [95000, 140000], "power": [300, 635], "spec": ["consumo", 2.0, 10.0], "seats": 5, "tagline": "SUV grande de lujo con vocación deportiva", "reco": "Para quien quiere el lujo y la capacidad todoterreno de Range Rover pero con un punto más deportivo y, normalmente, algo más de presupuesto disponible.", "pros": ["Combina lujo, deportividad y capacidad todoterreno", "Mucho prestigio de marca"], "cons": ["Precio y mantenimiento solo al alcance de presupuestos altos"], "tags": ["Premium", "Deportivo"]}, {"id": "genesis-gv60", "brand": "Genesis", "model": "GV60", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [58000, 72000], "power": [229, 490], "spec": ["autonomia", 420, 517], "seats": 5, "tagline": "SUV eléctrico premium coreano, recién llegado a España", "reco": "Marca muy nueva en España (llega en 2026), así que cuenta con menos talleres y menos coches en las carreteras; a cambio, suele incluir más equipamiento de serie que sus rivales alemanes al mismo precio.", "pros": ["Mucho equipamiento de serie incluido en el precio", "Plataforma eléctrica muy avanzada, compartida con Hyundai Ioniq 5 y Kia EV6"], "cons": ["Red de concesionarios y talleres todavía muy reducida en España"], "tags": ["Eléctrico", "Premium"]}, {"id": "genesis-gv70", "brand": "Genesis", "model": "GV70", "segment": "SUV grande", "fuel": "Eléctrico", "body": "suv", "price": [70000, 85000], "power": [490, 490], "spec": ["autonomia", 400, 479], "seats": 5, "tagline": "SUV eléctrico grande, rival directo del Porsche Macan eléctrico", "reco": "Si te atrae la idea de un SUV premium con muchas prestaciones pero sin pagar el sobreprecio de marca alemana, esta es la apuesta de Genesis para competir directamente con ellas.", "pros": ["Prestaciones muy altas (490 CV de serie)", "Mucho equipamiento incluido frente a rivales alemanes"], "cons": ["Marca todavía sin recorrido ni red de talleres consolidada en España"], "tags": ["Eléctrico", "Premium", "Deportivo"]}, {"id": "genesis-g80", "brand": "Genesis", "model": "G80", "segment": "Berlina", "fuel": "Eléctrico", "body": "car", "price": [75000, 95000], "power": [365, 365], "spec": ["autonomia", 450, 520], "seats": 5, "tagline": "La berlina eléctrica insignia de Genesis", "reco": "Compite directamente con el Mercedes EQE o el BMW i5 pero, al ser una marca nueva en España, suele venir más completa de equipamiento por un precio similar.", "pros": ["Mucho equipamiento de serie frente a sus rivales alemanes", "Interior muy cuidado y silencioso"], "cons": ["Marca recién llegada a España, valor de reventa todavía incierto"], "tags": ["Eléctrico", "Premium"]}, {"id": "polestar-2", "brand": "Polestar", "model": "Polestar 2", "segment": "Berlina", "fuel": "Eléctrico", "body": "car", "price": [42000, 52000], "power": [272, 476], "spec": ["autonomia", 480, 650], "seats": 5, "tagline": "Berlina eléctrica escandinava, rival directo del Tesla Model 3", "reco": "Si te gusta la idea del Model 3 pero prefieres un diseño más discreto y un interior con menos pantalla y más botones físicos, es la alternativa más directa.", "pros": ["Diseño escandinavo discreto y de calidad", "Buena autonomía en las versiones de mayor batería"], "cons": ["Maletero delantero (frunk) más pequeño que el de Tesla"], "tags": ["Eléctrico", "Premium"]}, {"id": "polestar-3", "brand": "Polestar", "model": "Polestar 3", "segment": "SUV grande", "fuel": "Eléctrico", "body": "suv", "price": [78000, 90000], "power": [489, 517], "spec": ["autonomia", 560, 610], "seats": 5, "tagline": "SUV eléctrico grande, hermano deportivo del Volvo EX90", "reco": "Comparte mucho con el Volvo EX90 pero con un punto más deportivo en la puesta a punto; la decisión entre ambos es sobre todo de estilo y de cuánto valoras esa diferencia.", "pros": ["Buenas prestaciones para un SUV de su tamaño", "Comparte la base de seguridad de Volvo"], "cons": ["Precio muy elevado, compite directamente con marcas alemanas premium"], "tags": ["Eléctrico", "Premium"]}, {"id": "polestar-4", "brand": "Polestar", "model": "Polestar 4", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [50000, 75000], "power": [272, 544], "spec": ["autonomia", 560, 620], "seats": 5, "tagline": "SUV-coupé eléctrico sin luneta trasera, con cámara en su lugar", "reco": "Es de los SUV eléctricos más vistosos del momento; el detalle de no tener luneta trasera (sustituida por una cámara) es lo más comentado, así que pruébalo antes de decidir si te convence.", "pros": ["Diseño muy llamativo y diferenciado", "Buenas prestaciones, especialmente en la versión de dos motores"], "cons": ["Sin luneta trasera real, solo cámara; no es para todo el mundo"], "tags": ["Eléctrico", "Premium", "Deportivo"]}, {"id": "maserati-grecale", "brand": "Maserati", "model": "Grecale", "segment": "SUV grande", "fuel": "Híbrido", "body": "suv", "price": [75000, 100000], "power": [300, 530], "spec": ["consumo", 7.5, 11.0], "seats": 5, "tagline": "El SUV de entrada a Maserati, con motores de origen Ferrari en la versión Trofeo", "reco": "Es una compra emocional tanto como racional: si lo que buscas es la exclusividad y el sonido del motor por encima de la lógica de precio/prestaciones, es de las pocas opciones italianas en este segmento.", "pros": ["Motor V6 de origen Ferrari en la versión Trofeo", "Exclusividad, pocas unidades circulando comparado con SUV alemanes"], "cons": ["Fiabilidad y red de talleres muy por detrás de las marcas alemanas"], "tags": ["Premium", "Deportivo"]}, {"id": "fiat-panda", "brand": "Fiat", "model": "Grande Panda", "segment": "Urbano", "fuel": "Híbrido", "body": "car", "price": [17000, 22000], "power": [70, 113], "spec": ["consumo", 4.5, 5.0], "seats": 5, "tagline": "El utilitario italiano más vendido históricamente, renovado", "reco": "Si quieres un coche pequeño con un punto de diseño y carácter italiano por encima del Sandero o el Picanto, sin pasarte mucho de presupuesto, es una opción a tener en cuenta.", "pros": ["Diseño con carácter, distinto a la media del segmento", "Precio competitivo dentro de su categoría"], "cons": ["Maletero algo pequeño en la versión electrificada"], "tags": ["Económico", "Ciudad"]}, {"id": "fiat-600", "brand": "Fiat", "model": "600", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [24000, 33000], "power": [115, 154], "spec": ["autonomia", 300, 400], "seats": 5, "tagline": "SUV pequeño de Fiat, disponible en gasolina o eléctrico", "reco": "Buena opción si quieres probar el eléctrico en un SUV pequeño con diseño italiano, manteniendo también la opción de gasolina si todavía no te convence dar el salto.", "pros": ["Disponible en gasolina y eléctrico bajo el mismo diseño", "Tamaño práctico para ciudad sin perder maletero"], "cons": ["Autonomía de la versión eléctrica algo por debajo de rivales"], "tags": ["Eléctrico", "Ciudad"]}, {"id": "fiat-tipo", "brand": "Fiat", "model": "Tipo", "segment": "Compacto", "fuel": "Gasolina", "body": "car", "price": [20000, 26000], "power": [100, 130], "spec": ["consumo", 5.8, 6.5], "seats": 5, "tagline": "Compacto sencillo, de los más baratos de su categoría", "reco": "Si necesitas el espacio de un compacto pero el precio de un utilitario, es de las opciones más económicas de este tamaño en el mercado.", "pros": ["Precio bajo para el espacio que ofrece", "Maletero amplio para su categoría"], "cons": ["Equipamiento tecnológico más básico que sus rivales"], "tags": ["Económico", "Familiar"]}, {"id": "abarth-600e", "brand": "Abarth", "model": "600e", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [38000, 42000], "power": [207, 240], "spec": ["autonomia", 335, 335], "seats": 5, "tagline": "La versión deportiva y eléctrica del Fiat 600", "reco": "Si quieres un SUV pequeño eléctrico con un punto deportivo de verdad (sonido artificial de escape incluido) y te gusta destacar, es de los más divertidos de su tamaño.", "pros": ["Prestaciones y sonido deportivo poco habituales en un eléctrico pequeño", "Diseño muy llamativo"], "cons": ["Autonomía ajustada para el precio que tiene"], "tags": ["Eléctrico", "Deportivo"]}, {"id": "kgm-torres", "brand": "KGM", "model": "Torres", "segment": "SUV grande", "fuel": "Gasolina", "body": "suv", "price": [28000, 36000], "power": [170, 170], "spec": ["consumo", 7.5, 8.0], "seats": 5, "tagline": "SUV grande surcoreano, mucho espacio por precio contenido", "reco": "Si lo que más te importa es maletero y espacio interior al mejor precio posible dentro del tamaño SUV grande, es de las opciones menos conocidas pero más espaciosas del mercado.", "pros": ["Mucho espacio interior y maletero para su precio", "Buena dotación de equipamiento de serie"], "cons": ["Marca menos conocida, red de talleres más reducida"], "tags": ["Económico", "Familiar"]}, {"id": "kgm-tivoli", "brand": "KGM", "model": "Tivoli", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [22000, 27000], "power": [128, 128], "spec": ["consumo", 6.5, 7.0], "seats": 5, "tagline": "SUV pequeño asequible, de las opciones menos conocidas del segmento", "reco": "Buena alternativa si quieres comparar precios fuera de las marcas habituales; suele tener descuentos agresivos para compensar ser menos conocida.", "pros": ["Precio competitivo dentro de su categoría", "Buen equipamiento de serie para lo que cuesta"], "cons": ["Menor valor de reventa que las marcas más establecidas"], "tags": ["Económico"]}, {"id": "byd-dolphinsurf", "brand": "BYD", "model": "Dolphin Surf", "segment": "Urbano", "fuel": "Eléctrico", "body": "car", "price": [12000, 16000], "power": [95, 95], "spec": ["autonomia", 220, 322], "seats": 5, "tagline": "El eléctrico chino más barato a la venta en España", "reco": "Si tu objetivo es el eléctrico más barato posible (junto al Dacia Spring y el Leapmotor T03), este libra una guerra de precios constante con ellos; compara las ofertas del momento antes de decidir, cambian a menudo.", "pros": ["De los eléctricos nuevos más baratos del mercado español", "Buen equipamiento de serie para su precio"], "cons": ["Marca todavía generando confianza a largo plazo en Europa"], "tags": ["Económico", "Eléctrico", "Ciudad"]}, {"id": "byd-dolphin", "brand": "BYD", "model": "Dolphin", "segment": "Compacto", "fuel": "Eléctrico", "body": "car", "price": [21000, 29000], "power": [95, 204], "spec": ["autonomia", 340, 427], "seats": 5, "tagline": "Compacto eléctrico chino con muy buena relación equipamiento/precio", "reco": "Suele compararse directamente con el MG4: ambos son chinos, eléctricos y de precio similar; mira las ofertas vigentes de cada uno porque cambian con frecuencia y pueden decantar la balanza.", "pros": ["Mucho equipamiento de serie por el precio", "Batería LFP, tolera bien cargar al 100% sin desgastarse"], "cons": ["Maletero algo ajustado para su categoría"], "tags": ["Eléctrico", "Económico"]}, {"id": "byd-atto3", "brand": "BYD", "model": "Atto 3", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [28000, 34000], "power": [204, 204], "spec": ["autonomia", 420, 440], "seats": 5, "tagline": "SUV compacto eléctrico, de los más espaciosos de su precio", "reco": "Si priorizas maletero y espacio interior en un eléctrico de precio medio, es de los más generosos en ese aspecto dentro de su categoría de precio.", "pros": ["Maletero de los más amplios en su rango de precio", "Buena dotación de seguridad de serie"], "cons": ["Diseño interior algo recargado, no gusta a todo el mundo"], "tags": ["Eléctrico", "Familiar"]}, {"id": "byd-seal", "brand": "BYD", "model": "Seal", "segment": "Berlina", "fuel": "Eléctrico", "body": "car", "price": [36000, 44000], "power": [313, 530], "spec": ["autonomia", 460, 570], "seats": 5, "tagline": "Berlina eléctrica deportiva, competidora directa del Tesla Model 3", "reco": "Si quieres algo con prestaciones similares al Model 3 pero un interior con más botones físicos y menos \"todo por pantalla\", es de las alternativas más directas que hay ahora mismo.", "pros": ["Prestaciones muy altas en la versión de doble motor", "Batería LFP de gran durabilidad"], "cons": ["Maletero más pequeño que el de un SUV equivalente"], "tags": ["Eléctrico", "Deportivo"]}, {"id": "byd-tang", "brand": "BYD", "model": "Tang", "segment": "SUV grande", "fuel": "Eléctrico", "body": "suv", "price": [70000, 80000], "power": [517, 517], "spec": ["autonomia", 400, 460], "seats": 7, "tagline": "El SUV eléctrico grande de BYD, con 7 plazas", "reco": "Si necesitas 7 plazas en un eléctrico grande y quieres algo distinto a las marcas europeas habituales, es la apuesta de BYD para ese hueco concreto del mercado.", "pros": ["7 plazas en formato eléctrico, poco habitual", "Mucho equipamiento de serie"], "cons": ["Autonomía algo ajustada para el tamaño y peso del coche"], "tags": ["Eléctrico", "Familiar", "7 plazas"]}, {"id": "mg-mg3", "brand": "MG", "model": "MG3", "segment": "Urbano", "fuel": "Híbrido", "body": "car", "price": [14000, 19500], "power": [114, 195], "spec": ["consumo", 4.4, 6.1], "seats": 5, "tagline": "Utilitario híbrido al precio más bajo del mercado en esa tecnología", "reco": "Si quieres la tranquilidad de un híbrido (no hace falta enchufarlo) al precio de un coche de gasolina normal, este es probablemente el híbrido más barato que vas a encontrar nuevo.", "pros": ["El híbrido nuevo más barato del mercado español", "Buen equipamiento de serie para su precio"], "cons": ["Maletero algo reducido en la versión híbrida"], "tags": ["Económico", "Ciudad"]}, {"id": "mg-zs", "brand": "MG", "model": "ZS", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [19500, 28000], "power": [111, 156], "spec": ["consumo", 5.5, 6.5], "seats": 5, "tagline": "SUV compacto asequible, disponible también 100% eléctrico", "reco": "Buena opción si buscas un SUV pequeño barato y quieres decidir más adelante entre gasolina o eléctrico, ya que ambas versiones comparten el mismo diseño.", "pros": ["Precio competitivo dentro de su categoría", "También disponible en versión 100% eléctrica (ZS EV)"], "cons": ["Calidad de materiales interiores por detrás de marcas europeas"], "tags": ["Económico", "Familiar"]}, {"id": "mg-mg4", "brand": "MG", "model": "MG4", "segment": "Compacto", "fuel": "Eléctrico", "body": "car", "price": [26000, 33000], "power": [170, 435], "spec": ["autonomia", 350, 520], "seats": 5, "tagline": "Compacto eléctrico de los más vendidos entre las marcas chinas en España", "reco": "Es de los eléctricos chinos con más unidades vendidas en España, lo que significa más opiniones reales y más talleres acostumbrados a verlo; suele competir directamente en precio con el BYD Dolphin.", "pros": ["Uno de los eléctricos chinos más vendidos, fácil de encontrar opiniones", "Buena relación autonomía/precio"], "cons": ["Plazas traseras algo justas de espacio para las piernas"], "tags": ["Eléctrico", "Económico"]}, {"id": "mg-hs", "brand": "MG", "model": "HS", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [28000, 36000], "power": [160, 258], "spec": ["consumo", 1.3, 7.0], "seats": 5, "tagline": "SUV familiar asequible, con versión enchufable", "reco": "Si necesitas el espacio de un SUV familiar grande pero el presupuesto de uno más pequeño, esta es de las opciones que más espacio por euro ofrece del mercado actual.", "pros": ["Mucho espacio interior para el precio", "Versión enchufable disponible"], "cons": ["Valor de reventa todavía por detrás de marcas más establecidas"], "tags": ["Económico", "Familiar"]}, {"id": "leapmotor-t03", "brand": "Leapmotor", "model": "T03", "segment": "Urbano", "fuel": "Eléctrico", "body": "car", "price": [13000, 19500], "power": [95, 95], "spec": ["autonomia", 265, 295], "seats": 4, "tagline": "Eléctrico urbano chino, en guerra de precios constante con el Dacia Spring", "reco": "Compite directamente con el Dacia Spring por ser el eléctrico más barato del mercado; los precios de ambos cambian con descuentos casi cada mes, así que compara las ofertas vigentes antes de decidirte por cualquiera de los dos.", "pros": ["Uno de los eléctricos nuevos más baratos del mercado", "Buen equipamiento de serie de ayudas a la conducción"], "cons": ["Marca muy reciente en España, sin recorrido a largo plazo todavía"], "tags": ["Económico", "Eléctrico", "Ciudad"]}, {"id": "leapmotor-c10", "brand": "Leapmotor", "model": "C10", "segment": "SUV grande", "fuel": "Eléctrico", "body": "suv", "price": [28000, 35000], "power": [218, 218], "spec": ["autonomia", 420, 424], "seats": 5, "tagline": "SUV familiar eléctrico chino, distribuido en Europa junto con Stellantis", "reco": "Si quieres un SUV familiar eléctrico grande sin pagar precio de marca establecida, y no te importa que sea una marca muy reciente en España, la relación espacio/precio es de las más competitivas del momento.", "pros": ["Mucho espacio interior para el precio", "Distribuido en Europa con el respaldo de Stellantis"], "cons": ["Carga rápida más lenta que la de otros eléctricos de precio similar"], "tags": ["Eléctrico", "Económico", "Familiar"]}, {"id": "ds-3", "brand": "DS", "model": "DS3", "segment": "SUV", "fuel": "Híbrido", "body": "suv", "price": [30000, 37000], "power": [130, 156], "spec": ["consumo", 5.0, 5.7], "seats": 5, "tagline": "SUV pequeño premium francés, el más accesible de la gama DS", "reco": "Si te gusta la idea de un SUV premium pero el presupuesto de los alemanes se te va de las manos, DS suele tener descuentos de marca agresivos que lo dejan en un precio muy competitivo para lo que ofrece.", "pros": ["Diseño y acabados con mucho cuidado por el detalle", "Suele tener descuentos de marca muy notables sobre el precio de catálogo"], "cons": ["Red de concesionarios y talleres más reducida que las marcas generalistas"], "tags": ["Premium"]}, {"id": "ds-4", "brand": "DS", "model": "DS4", "segment": "Compacto", "fuel": "Híbrido", "body": "car", "price": [33000, 44000], "power": [136, 225], "spec": ["consumo", 5.0, 5.8], "seats": 5, "tagline": "Compacto premium francés con un diseño exterior muy cuidado", "reco": "Buena alternativa con personalidad francesa a los compactos premium alemanes, aunque su valor de reventa es todavía una incógnita comparado con ellos.", "pros": ["Diseño exterior y materiales interiores muy trabajados", "Buena insonorización y confort de marcha"], "cons": ["Valor de reventa más incierto que las marcas premium alemanas"], "tags": ["Premium"]}, {"id": "ds-7", "brand": "DS", "model": "DS7", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [33000, 52000], "power": [130, 300], "spec": ["consumo", 1.3, 7.0], "seats": 5, "tagline": "El SUV grande de DS, con versión enchufable E-Tense", "reco": "Si quieres un SUV grande premium con sello francés y la opción enchufable (hasta 58 km en eléctrico) cubre tus trayectos diarios, es una alternativa con más carácter que sus rivales alemanes habituales.", "pros": ["Versión enchufable con autonomía eléctrica útil para el día a día", "Diseño interior muy cuidado, con guiños a la alta relojería francesa"], "cons": ["Consumo elevado en las versiones de gasolina sin hibridar"], "tags": ["Premium", "Familiar"]}, {"id": "ds-n8", "brand": "DS", "model": "DS Nº8", "segment": "Berlina", "fuel": "Eléctrico", "body": "car", "price": [52000, 68000], "power": [230, 350], "spec": ["autonomia", 527, 750], "seats": 5, "tagline": "La berlina-SUV eléctrica insignia de DS, con hasta 750 km de autonomía declarada", "reco": "Si la autonomía es tu prioridad número uno en un eléctrico premium, está entre los que más kilómetros declaran del mercado actual; compruébalo en una prueba real antes de fiarte solo del dato de catálogo.", "pros": ["Autonomía declarada de las más altas del mercado eléctrico (hasta 750 km)", "Diseño y acabados muy cuidados, con materiales poco habituales"], "cons": ["Marca y modelo muy recientes, sin recorrido demostrado todavía"], "tags": ["Eléctrico", "Premium"]}, {"id": "alpine-a290", "brand": "Alpine", "model": "A290", "segment": "Compacto", "fuel": "Eléctrico", "body": "car", "price": [36000, 46000], "power": [180, 220], "spec": ["autonomia", 380, 380], "seats": 5, "tagline": "Hot hatch eléctrico deportivo, hermano con más carácter del Renault 5", "reco": "Si te gustaba la idea de un Renault 5 pero quieres algo más deportivo de verdad (suspensión y chasis específicos, no solo una pegatina), es la opción de la propia Renault para ese hueco.", "pros": ["Conducción deportiva real, no solo de imagen", "Ligero para ser un eléctrico, lo que se nota en la agilidad"], "cons": ["Precio notablemente más alto que el Renault 5 en el que se basa"], "tags": ["Eléctrico", "Deportivo"]}, {"id": "lynkco-01", "brand": "Lynk & Co", "model": "Lynk & Co 01", "segment": "SUV", "fuel": "Híbrido enchufable", "body": "suv", "price": [29000, 45000], "power": [204, 276], "spec": ["consumo", 1.0, 7.0], "seats": 5, "tagline": "SUV híbrido enchufable, hermano técnico del Volvo XC40, con cuota mensual muy popular", "reco": "Si te gusta el Volvo XC40 pero buscas un precio o cuota mensual más ajustada, comparte buena parte de su mecánica y ha sido, durante meses, el PHEV más vendido de España precisamente por eso.", "pros": ["Mecánica compartida con el fiable Volvo XC40", "Ha sido uno de los híbridos enchufables más vendidos de España"], "cons": ["Marca todavía generando reconocimiento en España frente a Volvo"], "tags": ["Familiar"]}, {"id": "lynkco-02", "brand": "Lynk & Co", "model": "Lynk & Co 02", "segment": "SUV", "fuel": "Eléctrico", "body": "suv", "price": [32000, 40000], "power": [272, 272], "spec": ["autonomia", 420, 445], "seats": 5, "tagline": "SUV-coupé eléctrico, de los mejor equipados de serie en su precio", "reco": "Si comparas equipamiento de serie por euro gastado, suele salir muy bien posicionado frente a SUV eléctricos de marcas más establecidas del mismo tamaño.", "pros": ["Mucho equipamiento de serie incluido en el precio", "Comparte plataforma eléctrica con el Volvo EX30 y los smart #1/#3"], "cons": ["Sin opción de tracción total, solo motor trasero"], "tags": ["Eléctrico"]}, {"id": "omoda-5", "brand": "Omoda", "model": "Omoda 5", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [20000, 28000], "power": [145, 211], "spec": ["consumo", 5.3, 7.0], "seats": 5, "tagline": "SUV chino de Chery, disponible en gasolina y también 100% eléctrico", "reco": "Si quieres comparar precios fuera de las marcas chinas más conocidas (BYD, MG), esta es de las últimas en llegar a España y suele competir agresivamente en precio para hacerse un hueco.", "pros": ["Precio competitivo y garantía comercial de 7 años", "Disponible en gasolina o eléctrico bajo el mismo diseño"], "cons": ["Marca muy reciente en España, sin recorrido demostrado todavía"], "tags": ["Económico"]}, {"id": "omoda-9", "brand": "Omoda", "model": "Omoda 9", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [48000, 58000], "power": [395, 537], "spec": ["consumo", 1.0, 2.0], "seats": 5, "tagline": "SUV grande chino de altas prestaciones, con casi 540 CV en su versión enchufable", "reco": "Llama la atención por la cantidad de potencia y equipamiento que ofrece para su precio frente a un SUV grande premium europeo, aunque la marca todavía no tiene recorrido demostrado en España.", "pros": ["Mucha potencia y equipamiento por el precio frente a marcas premium", "Garantía comercial de 7 años"], "cons": ["Marca sin historial demostrado de fiabilidad a largo plazo en España"], "tags": ["Premium", "Familiar"]}, {"id": "jaecoo-5", "brand": "Jaecoo", "model": "Jaecoo 5", "segment": "SUV", "fuel": "Gasolina", "body": "suv", "price": [20000, 26000], "power": [145, 145], "spec": ["consumo", 6.0, 7.0], "seats": 5, "tagline": "SUV pequeño chino de Chery, con garantía de 7 años", "reco": "Si priorizas el precio y la garantía larga por encima de la marca conocida, es de las opciones más nuevas y agresivas en precio del segmento SUV pequeño.", "pros": ["Garantía comercial de 7 años o 150.000 km", "Precio competitivo en su categoría"], "cons": ["Marca muy reciente en España, sin historial demostrado"], "tags": ["Económico"]}, {"id": "jaecoo-7", "brand": "Jaecoo", "model": "Jaecoo 7", "segment": "SUV grande", "fuel": "Híbrido enchufable", "body": "suv", "price": [32000, 42000], "power": [147, 347], "spec": ["consumo", 1.0, 7.0], "seats": 5, "tagline": "SUV familiar chino con sistema de tracción total todoterreno, versión enchufable incluida", "reco": "Si necesitas tracción total real con cierta capacidad todoterreno y la marca conocida no es tu prioridad, ofrece bastante equipamiento y prestaciones por el precio frente a SUV grandes europeos.", "pros": ["Sistema de tracción total todoterreno disponible", "Versión híbrida enchufable con buena autonomía eléctrica"], "cons": ["Marca sin historial demostrado de fiabilidad a largo plazo en España"], "tags": ["Familiar"]}];
+/* ===================== helpers ===================== */
+const fmtEUR = n => n.toLocaleString('es-ES') + ' \u20AC';
+
+function priceText(car){
+  const [a,b] = car.price;
+  return a === b ? fmtEUR(a) : `${fmtEUR(a)} \u2013 ${fmtEUR(b)}`;
+}
+function powerText(car){
+  const [a,b] = car.power;
+  return a === b ? `${a} CV` : `${a}\u2013${b} CV`;
+}
+function specLabel(car){
+  return car.spec[0] === 'autonomia' ? 'Autonom\u00EDa' : 'Consumo';
+}
+function specText(car){
+  const [type,a,b] = car.spec;
+  if(type === 'autonomia'){
+    return (a === b ? `${a}` : `${a}\u2013${b}`) + ' km';
+  }
+  return (a === b ? `${a}` : `${a}\u2013${b}`) + ' l/100km';
+}
+function fuelClass(fuel){
+  if(fuel === 'El\u00E9ctrico') return 'badge--fuel-electrico';
+  if(fuel === 'H\u00EDbrido enchufable') return 'badge--fuel-hibrido-enchufable';
+  if(fuel === 'H\u00EDbrido') return 'badge--fuel-hibrido';
+  return 'badge--fuel-gasolina';
+}
+function isElectricish(fuel){
+  return fuel === 'El\u00E9ctrico';
+}
+function esc(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+function imgSearchUrl(car){
+  return 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(`${car.brand} ${car.model}`);
+}
+
+/* ===================== gauge & icon SVGs ===================== */
+function polar(cx,cy,r,deg){
+  const rad = deg * Math.PI / 180;
+  return { x: cx + r*Math.cos(rad), y: cy - r*Math.sin(rad) };
+}
+function gaugeSVG(frac, color){
+  frac = Math.max(0, Math.min(1, frac));
+  const cx=60, cy=58, r=50;
+  const start = polar(cx,cy,r,180);
+  const end = polar(cx,cy,r,0);
+  const fillEnd = polar(cx,cy,r,180 - frac*180);
+  const needle = polar(cx,cy,r*0.74,180 - frac*180);
+  return `
+  <svg viewBox="0 0 120 64" xmlns="http://www.w3.org/2000/svg">
+    <path d="M ${start.x} ${start.y} A ${r} ${r} 0 0 1 ${end.x} ${end.y}" fill="none" stroke="#2A2F3A" stroke-width="9" stroke-linecap="round"/>
+    <path d="M ${start.x} ${start.y} A ${r} ${r} 0 0 1 ${fillEnd.x} ${fillEnd.y}" fill="none" stroke="${color}" stroke-width="9" stroke-linecap="round"/>
+    <line x1="${cx}" y1="${cy}" x2="${needle.x}" y2="${needle.y}" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="${cx}" cy="${cy}" r="4" fill="${color}"/>
+  </svg>`;
+}
+function fuelBadgeSVG(fuel){
+  const color = isElectricish(fuel) ? '#4FD8B8' : '#FF8A3D';
+  if(isElectricish(fuel)){
+    return `<path d="M13 2 L6 13 H11 L9 22 L18 9 H13 Z" fill="${color}"/>`;
+  }
+  if(fuel === 'H\u00EDbrido' || fuel === 'H\u00EDbrido enchufable'){
+    return `<path d="M12 2C7 6 4 10 4 14a8 8 0 0016 0c0-4-3-8-8-12z" fill="${color}"/>`;
+  }
+  return `<circle cx="12" cy="12" r="6" fill="${color}"/>`;
+}
+function carIconSVG(body, fuel){
+  const stroke = isElectricish(fuel) ? '#4FD8B8' : '#FF8A3D';
+  const shape = body === 'suv'
+    ? `<path d="M10 70 H6 a6 6 0 0 1-6-6 V52 a10 10 0 0 1 6-9 l14-8 q6-9 20-9 h44 q14 0 20 9 l14 8 a10 10 0 0 1 6 9 v12 a6 6 0 0 1-6 6 h-4" fill="none" stroke="${stroke}" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+       <path d="M28 46 h74" stroke="${stroke}" stroke-width="3" opacity=".55"/>`
+    : `<path d="M8 66 H5 a5 5 0 0 1-5-5 V49 a8 8 0 0 1 5-7 l18-9 q5-7 18-7 h36 q10 0 16 7 l16 9 a8 8 0 0 1 5 7 v12 a5 5 0 0 1-5 5 h-4" fill="none" stroke="${stroke}" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+       <path d="M26 46 h78" stroke="${stroke}" stroke-width="3" opacity=".55"/>`;
+  return `
+  <svg viewBox="0 0 130 80" xmlns="http://www.w3.org/2000/svg">
+    ${shape}
+    <circle cx="34" cy="68" r="9" fill="none" stroke="${stroke}" stroke-width="4"/>
+    <circle cx="98" cy="68" r="9" fill="none" stroke="${stroke}" stroke-width="4"/>
+    <g transform="translate(2,2) scale(0.55)">${fuelBadgeSVG(fuel)}</g>
+  </svg>`;
+}
+
+/* ===================== data setup ===================== */
+const SEGMENT_ORDER = ['Urbano','Compacto','SUV','SUV grande','Berlina','Familiar'];
+const FUEL_ORDER = ['Gasolina','H\u00EDbrido','H\u00EDbrido enchufable','El\u00E9ctrico'];
+
+const ALL_PRICES = CARS.flatMap(c => c.price);
+const GLOBAL_MIN = Math.min(...ALL_PRICES);
+const GLOBAL_MAX = Math.max(...ALL_PRICES);
+
+function priceFrac(car){
+  const mid = (car.price[0] + car.price[1]) / 2;
+  return (mid - GLOBAL_MIN) / (GLOBAL_MAX - GLOBAL_MIN);
+}
+
+const BRANDS = [...new Set(CARS.map(c => c.brand))];
+
+/* ===================== hero stats ===================== */
+function renderHeroStats(){
+  const el = document.getElementById('heroStats');
+  el.innerHTML = `
+    <div class="stat"><span class="stat__value">${CARS.length}</span><span class="stat__label">modelos analizados</span></div>
+    <div class="stat"><span class="stat__value">${BRANDS.length}</span><span class="stat__label">marcas distintas</span></div>
+    <div class="stat"><span class="stat__value">${fmtEUR(GLOBAL_MIN)}\u2013${fmtEUR(GLOBAL_MAX)}</span><span class="stat__label">rango de precios cubierto</span></div>
+  `;
+}
+
+/* ===================== filter selects ===================== */
+function fillSelect(id, values){
+  const sel = document.getElementById(id);
+  values.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v;
+    opt.textContent = v;
+    sel.appendChild(opt);
+  });
+}
+
+/* ===================== state ===================== */
+const state = {
+  search: '',
+  segment: 'all',
+  fuel: 'all',
+  priceBucket: 'all',
+  sort: 'price-asc'
+};
+const compareIds = new Set();
+const MAX_COMPARE = 3;
+
+function inBucket(car, bucket){
+  const start = car.price[0];
+  if(bucket === 'all') return true;
+  if(bucket === 'b1') return start < 20000;
+  if(bucket === 'b2') return start >= 20000 && start < 35000;
+  if(bucket === 'b3') return start >= 35000 && start < 55000;
+  if(bucket === 'b4') return start >= 55000;
+  return true;
+}
+
+function getFiltered(){
+  const q = state.search.trim().toLowerCase();
+  let list = CARS.filter(c => {
+    if(state.segment !== 'all' && c.segment !== state.segment) return false;
+    if(state.fuel !== 'all' && c.fuel !== state.fuel) return false;
+    if(!inBucket(c, state.priceBucket)) return false;
+    if(q && !(`${c.brand} ${c.model}`.toLowerCase().includes(q))) return false;
+    return true;
+  });
+  if(state.sort === 'price-asc') list.sort((a,b)=>a.price[0]-b.price[0]);
+  else if(state.sort === 'price-desc') list.sort((a,b)=>b.price[0]-a.price[0]);
+  else if(state.sort === 'brand-asc') list.sort((a,b)=> (a.brand+a.model).localeCompare(b.brand+b.model,'es'));
+  return list;
+}
+
+/* ===================== card rendering ===================== */
+function cardHTML(car){
+  const color = isElectricish(car.fuel) ? '#4FD8B8' : '#FF8A3D';
+  const isFav = compareIds.has(car.id);
+  return `
+  <article class="car-card" data-id="${car.id}">
+    <div class="car-card__top">
+      <span class="car-card__brand">${esc(car.brand)}</span>
+      <div class="badges">
+        <span class="badge">${esc(car.segment)}</span>
+        <span class="badge ${fuelClass(car.fuel)}">${esc(car.fuel)}</span>
+      </div>
+    </div>
+    <a class="car-card__visual" href="${imgSearchUrl(car)}" target="_blank" rel="noopener" title="Ver fotos reales de ${esc(car.brand)} ${esc(car.model)}">${carIconSVG(car.body, car.fuel)}</a>
+    <a class="photo-link" href="${imgSearchUrl(car)}" target="_blank" rel="noopener">Ver fotos reales &#8599;</a>
+    <h3 class="car-card__model">${esc(car.model)}</h3>
+    <p class="car-card__tagline">${esc(car.tagline)}</p>
+    <div class="gauge-block">
+      ${gaugeSVG(priceFrac(car), color)}
+      <div class="gauge-block__text">
+        <span class="gauge-block__price">${priceText(car)}</span>
+        <span class="gauge-block__label">econ\u00F3mico &harr; premium</span>
+      </div>
+    </div>
+    <div class="specs-row">
+      <div class="spec-chip"><span class="spec-chip__value">${powerText(car)}</span><span class="spec-chip__label">Potencia</span></div>
+      <div class="spec-chip"><span class="spec-chip__value">${specText(car)}</span><span class="spec-chip__label">${specLabel(car)}</span></div>
+      <div class="spec-chip"><span class="spec-chip__value">${car.seats}</span><span class="spec-chip__label">Plazas</span></div>
+    </div>
+    <div class="car-card__actions">
+      <button class="btn btn--primary btn--full" data-action="detail" data-id="${car.id}">Ver ficha completa</button>
+      <button class="fav-btn ${isFav?'is-active':''}" data-action="compare" data-id="${car.id}" aria-label="A\u00F1adir a comparar" title="A\u00F1adir a comparar">\u2665</button>
+    </div>
+  </article>`;
+}
+
+function renderGrid(){
+  const list = getFiltered();
+  const grid = document.getElementById('carGrid');
+  const empty = document.getElementById('emptyState');
+  const count = document.getElementById('resultCount');
+  count.textContent = `${list.length} modelo${list.length===1?'':'s'} encontrado${list.length===1?'':'s'}`;
+  if(list.length === 0){
+    grid.innerHTML = '';
+    empty.hidden = false;
+  } else {
+    empty.hidden = true;
+    grid.innerHTML = list.map(cardHTML).join('');
+  }
+  // wire card buttons
+  grid.querySelectorAll('[data-action="detail"]').forEach(btn => {
+    btn.addEventListener('click', () => openDetail(btn.dataset.id));
+  });
+  grid.querySelectorAll('[data-action="compare"]').forEach(btn => {
+    btn.addEventListener('click', (e) => { e.stopPropagation(); toggleCompare(btn.dataset.id); });
+  });
+  grid.querySelectorAll('.car-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if(e.target.closest('[data-action]')) return;
+      openDetail(card.dataset.id);
+    });
+  });
+}
+
+/* ===================== detail panel ===================== */
+function detailHTML(car){
+  const color = isElectricish(car.fuel) ? '#4FD8B8' : '#FF8A3D';
+  const isFav = compareIds.has(car.id);
+  return `
+    <p class="detail__brand">${esc(car.brand)}</p>
+    <h2 class="detail__model">${esc(car.model)}</h2>
+    <div class="badges">
+      <span class="badge">${esc(car.segment)}</span>
+      <span class="badge ${fuelClass(car.fuel)}">${esc(car.fuel)}</span>
+    </div>
+    <div class="detail__visual">${carIconSVG(car.body, car.fuel)}</div>
+    <a class="photo-link photo-link--detail" href="${imgSearchUrl(car)}" target="_blank" rel="noopener">Ver fotos reales de este coche en Google &#8599;</a>
+
+    <div class="detail__gauge">
+      ${gaugeSVG(priceFrac(car), color)}
+      <div>
+        <div class="detail__price">${priceText(car)}</div>
+        <div class="detail__price-sub">precio orientativo seg\u00FAn acabado y oferta</div>
+      </div>
+    </div>
+
+    <table class="spec-table">
+      <tr><td>Potencia</td><td>${powerText(car)}</td></tr>
+      <tr><td>${specLabel(car)}</td><td>${specText(car)}</td></tr>
+      <tr><td>Plazas</td><td>${car.seats}</td></tr>
+      <tr><td>Segmento</td><td>${esc(car.segment)}</td></tr>
+      <tr><td>Combustible</td><td>${esc(car.fuel)}</td></tr>
+    </table>
+
+    <div class="reco-box">
+      <p class="reco-box__label">Mi recomendaci\u00F3n</p>
+      <p>${esc(car.reco)}</p>
+    </div>
+
+    <div class="pc-grid">
+      <div class="pc-col pros">
+        <h4>A favor</h4>
+        <ul>${car.pros.map(p=>`<li>${esc(p)}</li>`).join('')}</ul>
+      </div>
+      <div class="pc-col cons">
+        <h4>Ten en cuenta</h4>
+        <ul>${car.cons.map(p=>`<li>${esc(p)}</li>`).join('')}</ul>
+      </div>
+    </div>
+
+    <div class="detail__tags">
+      ${car.tags.map(t=>`<span class="badge">${esc(t)}</span>`).join('')}
+    </div>
+
+    <div class="detail__actions">
+      <button class="btn btn--primary btn--full" data-action="compare" data-id="${car.id}">${isFav ? 'Quitar de comparar' : 'A\u00F1adir a comparar'}</button>
+    </div>
+  `;
+}
+
+function openDetail(id){
+  const car = CARS.find(c => c.id === id);
+  if(!car) return;
+  document.getElementById('detailContent').innerHTML = detailHTML(car);
+  document.getElementById('detailContent').querySelector('[data-action="compare"]').addEventListener('click', () => {
+    toggleCompare(id);
+    openDetail(id);
+  });
+  document.getElementById('detailOverlay').classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDetail(){
+  document.getElementById('detailOverlay').classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+
+/* ===================== compare tray & modal ===================== */
+function toggleCompare(id){
+  if(compareIds.has(id)){
+    compareIds.delete(id);
+  } else {
+    if(compareIds.size >= MAX_COMPARE){
+      renderTray();
+      return;
+    }
+    compareIds.add(id);
+  }
+  renderTray();
+  renderGrid();
+}
+
+function renderTray(){
+  const tray = document.getElementById('compareTray');
+  const items = document.getElementById('trayItems');
+  const hint = document.getElementById('trayHint');
+  const btn = document.getElementById('trayCompareBtn');
+
+  if(compareIds.size === 0){
+    tray.hidden = true;
+    return;
+  }
+  tray.hidden = false;
+  items.innerHTML = [...compareIds].map(id => {
+    const car = CARS.find(c=>c.id===id);
+    return `<span class="compare-chip">${esc(car.brand)} ${esc(car.model)}<button data-id="${id}" aria-label="Quitar">\u00D7</button></span>`;
+  }).join('');
+  items.querySelectorAll('button').forEach(b => {
+    b.addEventListener('click', () => toggleCompare(b.dataset.id));
+  });
+  if(compareIds.size >= MAX_COMPARE){
+    hint.textContent = 'M\u00E1ximo 3 coches. Quita uno para a\u00F1adir otro.';
+  } else {
+    hint.textContent = `${compareIds.size} de ${MAX_COMPARE} seleccionados`;
+  }
+  btn.disabled = compareIds.size < 2;
+}
+
+function renderCompareModal(){
+  const cars = [...compareIds].map(id => CARS.find(c=>c.id===id));
+  const rows = [
+    ['Marca', c => esc(c.brand)],
+    ['Modelo', c => esc(c.model)],
+    ['Segmento', c => esc(c.segment)],
+    ['Combustible', c => esc(c.fuel)],
+    ['Precio', c => priceText(c)],
+    ['Potencia', c => powerText(c)],
+    [(cars.some(c=>c.spec[0]==='consumo') ? 'Consumo' : 'Autonom\u00EDa'), c => specText(c)],
+    ['Plazas', c => c.seats],
+  ];
+  let html = `<h2 class="compare__head">Comparativa</h2><table class="compare-table"><tr><th></th>${cars.map(c=>`<th>${esc(c.brand)}<br>${esc(c.model)}</th>`).join('')}</tr>`;
+  rows.forEach(([label, fn]) => {
+    html += `<tr><td>${label}</td>${cars.map(c=>`<td>${fn(c)}</td>`).join('')}</tr>`;
+  });
+  html += `</table>`;
+  document.getElementById('compareContent').innerHTML = html;
+  document.getElementById('compareOverlay').classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCompare(){
+  document.getElementById('compareOverlay').classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+
+/* ===================== wiring ===================== */
+function init(){
+  renderHeroStats();
+  fillSelect('segmentSelect', SEGMENT_ORDER);
+  fillSelect('fuelSelect', FUEL_ORDER);
+  renderGrid();
+  renderTray();
+
+  document.getElementById('searchInput').addEventListener('input', e => {
+    state.search = e.target.value; renderGrid();
+  });
+  document.getElementById('segmentSelect').addEventListener('change', e => {
+    state.segment = e.target.value; renderGrid();
+  });
+  document.getElementById('fuelSelect').addEventListener('change', e => {
+    state.fuel = e.target.value; renderGrid();
+  });
+  document.getElementById('priceSelect').addEventListener('change', e => {
+    state.priceBucket = e.target.value; renderGrid();
+  });
+  document.getElementById('sortSelect').addEventListener('change', e => {
+    state.sort = e.target.value; renderGrid();
+  });
+
+  document.getElementById('detailClose').addEventListener('click', closeDetail);
+  document.getElementById('detailOverlay').addEventListener('click', e => {
+    if(e.target.id === 'detailOverlay') closeDetail();
+  });
+  document.getElementById('compareClose').addEventListener('click', closeCompare);
+  document.getElementById('compareOverlay').addEventListener('click', e => {
+    if(e.target.id === 'compareOverlay') closeCompare();
+  });
+  document.getElementById('trayCompareBtn').addEventListener('click', () => {
+    if(compareIds.size >= 2) renderCompareModal();
+  });
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape'){ closeDetail(); closeCompare(); }
+  });
+  document.querySelectorAll('[data-open-id]').forEach(el => {
+    el.addEventListener('click', () => openDetail(el.dataset.openId));
+  });
+}
+init();
+
+</script>
+</body>
+</html>
